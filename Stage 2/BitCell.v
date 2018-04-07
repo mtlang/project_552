@@ -6,14 +6,16 @@ inout Bitline1, Bitline2;
 
 // Internal Signals
 wire q;
+wire forwarding;		// for data forwarding
 
 // Instantiate a DFF to hold values
 dff DFF(.q(q), .d(D), .wen(WriteEnable), .clk(clk), .rst(rst));
 
-// Tri state buffers
-assign Bitline1 = (ReadEnable1) ? q : 1'bz;
-assign Bitline2 = (ReadEnable2) ? q : 1'bz;
+// Data forwarding
+assign forwarding = (WriteEnable) ? D : q;
 
-// Change to if read and write register are the same, bypass. Also move to register level?
+// Tri state buffers w/ Data forwarding
+assign Bitline1 = (ReadEnable1) ? forwarding : 1'bz;
+assign Bitline2 = (ReadEnable2) ? forwarding : 1'bz;
 
 endmodule
