@@ -72,7 +72,7 @@ case (ALU_OP)
 
 	// RED
 	4'b0000 : begin
-		assign alu_out = {9'h000,red};
+		assign alu_out = {{9{red[6]}},red};
 		assign flags_out = Flags;
 	end
 
