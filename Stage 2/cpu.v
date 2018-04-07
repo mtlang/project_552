@@ -46,9 +46,13 @@ wire [15:0] data_out;			// Data out from Data Memory
 wire [15:0] data_out_final;		// Final output data (ALU result or Data Mem data)
 
 // PC Signals
+wire pc_branch;					// Branch signal determined by condition codes
 wire [2:0] flags;				// Output from Flag register
+wire [8:0] I_shift;				// Value of immediate left shifted by 1
 wire [15:0] PC_in;				// Value of PC read from PC Reg
+wire [15:0] PC_plus_inter;		// Itermediate value of PC+2
 wire [15:0] PC_plus_two;		// Value of current pc + 2 for PCS instruction
+wire [15:0] PC_branchi;			// Value of PC+2+(Imm<<1)
 wire [15:0] PC_next;			// Value of PC after PC_control
 wire [15:0] PC_final;			// Next value of PC after current instructions execution
 
@@ -89,12 +93,30 @@ ALU_16bit ALU(.ALU_OP(ALU_OP), .SrcData1(ALU_in1), .SrcData2(ALU_in2), .Flags(AL
 				.Result(ALU_result), .rst(rst));
 
 // PC
-PC_Reg PC(.clk(clk), .rst(rst), .D(pc), .WriteReg(1'b1), .Q(PC_in));	// need write enable?
+PC_Reg PC(.clk(clk), .rst(rst), .D(PC_final), .WriteReg(1'b1), .Q(PC_in));	// need write enable?
 
 // PC Control
-// TODO Move pc logic into cpu.v in order to pipeline the signals
-PC_control PC_Cont(.C(cc), .I(immediate), .F(flags), .PC_in(PC_in), 
-				.PC_out(PC_next), .PC_Plus_Two(PC_plus_two), .BRANCH(BRANCH));
+
+assign pc_branch = (cc == 3'b000) ? ~flags[2] :					// Not Equal (Z=0)
+		(cc == 3'b001) ? flags[2] :							// Equal (Z=1)
+		(cc == 3'b010) ? ~flags[2] & ~flags[0] :					// Greater than (Z=N=0)
+		(cc == 3'b011) ? flags[0] : 							// Less than (N=1)
+		(cc == 3'b100) ? flags[2] | (~flags[2] & ~flags[0]) : 		// Greater than or Equal (Z=1 or Z=N=0)
+		(cc == 3'b101) ? flags[2] | flags[0] :					// Less than or Equal (N=1 or Z=1)
+		(cc == 3'b110) ? flags[1] :							// Overflow (V=1)
+		1'b1;											// Unconditional
+
+assign I_shift = {immediate[7:0], 1'b0};
+
+addsub_16bit adder1(.Sum(PC_plus_two), .Ovfl(), .A(PC_in), .B(16'h0002), .sub(1'b0));	// PC+2 adder
+addsub_16bit adder2(.Sum(PC_branchi), .Ovfl(), .A(PC_plus_two), .B({7'h0, I_shift}), .sub(1'b0));	// PC+2+immediate adder
+//addsub_16bit adder3(.Sum(PC_plus_two), .Ovfl(), .A(PC_plus_inter), .B(16'h0002), .sub(1'b0));	// Add another 2 because of mem accesses
+// Why did we do the thing above?
+
+assign PC_next = (BRANCH & pc_branch) ? PC_branchi : PC_plus_two;
+
+//PC_control PC_Cont(.C(cc), .I(immediate), .F(flags), .PC_in(PC_in), 
+//				.PC_out(PC_next), .PC_Plus_Two(PC_plus_two), .BRANCH(BRANCH));
 	
 /////////////////////////
 // Combinational Logic //
@@ -119,11 +141,12 @@ assign ALU_in1 = (IMM) ? extended_immediate : src_data1;	// Mux for ALU input, z
 assign ALU_in2 = src_data2;
 
 // PC Stuff
-assign PC_final = (BR) ? src_data1 :		// BR mux
+assign PC_final = (BR) ? src_data1 :		// BR mux	// TODO Need to change this, BR depends on cc's
 				  (hlt) ? PC_in : 			// HLT mux
 				  (rst) ? 16'h0000 :		// RESET
 				  PC_next;					// default
-assign pc = PC_final;
+				  
+assign pc = PC_in;	// current value of PC during a given cycle
 
 endmodule
 
