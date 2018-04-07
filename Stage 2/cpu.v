@@ -26,10 +26,12 @@ wire SHIFT;						// Control signal for if instruction is a shift/rotate
 wire [3:0] ALU_OP;				// Control signal for ALU Operation to be performed
 
 // Instruction Memory Signals
+wire [2:0] cc;					// Condition codes for branch instructions
 wire [3:0] srcReg1;				// First source register
 wire [3:0] srcReg2;				// Second source register
 wire [3:0] dstReg;				// Destination register
 wire [8:0] immediate;			// Immediate value for Branch instruction
+wire [15:0] extended_immediate; // Immediate used for ALU ops
 wire [15:0] instruction;		// Instruction obtained from PC val
 
 // Register File Signals
@@ -70,16 +72,13 @@ memory1c InstMem(.data_out(instruction), .data_in(16'hxxxx), .addr(PC_in), .enab
 			.wr(1'b0), .clk(clk), .rst(rst));
 
 // Register File
-// TODO check if correct
 RegisterFile Regs(.clk(clk), .rst(rst), .SrcReg1(srcReg1), .SrcReg2(srcReg2), .DstReg(dstReg), 
 			.WriteReg(RegWrite), .DstData(data_write_reg), .SrcData1(src_data1), .SrcData2(src_data2));
 
 // Flag Register
-// TODO check if correct
 Flag_Reg F(.clk(clk), .rst(rst), .D(ALU_flags), .WriteReg(FlagWrite), .Q(flags));
 
 // Instruction Control block
-// TODO check if correct
 instruction_control Control(.opcode(instruction[15:12]), .ALU_OP(ALU_OP), .HLT(hlt), .BR(BR), 
 							.IMM(IMM), .PCS(PCS), .MemWrite(MemWrite), .MemRead(MemRead), 
 							.MemToReg(MemToReg), .RegWrite(RegWrite), .FlagWrite(FlagWrite), 
@@ -93,14 +92,17 @@ ALU_16bit ALU(.ALU_OP(ALU_OP), .SrcData1(ALU_in1), .SrcData2(ALU_in2), .Flags(AL
 PC_Reg PC(.clk(clk), .rst(rst), .D(pc), .WriteReg(1'b1), .Q(PC_in));	// need write enable?
 
 // PC Control
-PC_control PC_Cont(.C(instruction[11:9]), .I(immediate), .F(flags), .PC_in(PC_in), 
+// TODO Move pc logic into cpu.v in order to pipeline the signals
+PC_control PC_Cont(.C(cc), .I(immediate), .F(flags), .PC_in(PC_in), 
 				.PC_out(PC_next), .PC_Plus_Two(PC_plus_two), .BRANCH(BRANCH));
 	
 /////////////////////////
 // Combinational Logic //
 /////////////////////////
 assign rst = ~rst_n;					// Invert since reset isn't consistent across modules...
+assign cc = instruction[11:9];			// Bits containing the Condition Code for branches
 assign immediate = instruction[8:0];	// Immediate value for Branch instruction
+assign extended_immediate = {8'h00, instruction[7:0]};	// immediate value for alu ops
 assign data_out_final = (MemToReg) ? data_out : ALU_result;	// Data to Reg File is from Data Mem or ALU
 
 // Inputs to Register File
@@ -113,7 +115,7 @@ assign data_write_reg = (PCS) ? PC_plus_two : data_out_final;	// Mux for write d
 assign data_write = src_data2;
 
 // Inputs to ALU
-assign ALU_in1 = (IMM) ? {8'b0, instruction[7:0]} : src_data1;	// Mux for ALU input, zero extend imm
+assign ALU_in1 = (IMM) ? extended_immediate : src_data1;	// Mux for ALU input, zero extend imm
 assign ALU_in2 = src_data2;
 
 // PC Stuff
