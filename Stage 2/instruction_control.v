@@ -103,11 +103,9 @@ always @* begin
 		assign IMM = 1;
 	end
 	4'hC: begin	// B
-		assign FlagWrite = 1;
 		assign BRANCH = 1;
 	end
 	4'hD: begin	// BR
-		assign FlagWrite = 1;
 		assign BR = 1;
 	end
 	4'hE: begin	// PCS
