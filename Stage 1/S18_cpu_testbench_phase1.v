@@ -174,7 +174,7 @@ module cpu_tb();
    assign MemAddress = DUT.ALU_result;
    // Address to access memory with (for both reads and writes to memory, 16 bits)
    
-   assign MemData = DUT.src_data2;
+   assign MemData = DUT.data_write;
    // Data to be written to memory for memory writes (16 bits)
    
 //   assign Halt = DUT.memory0.halt; //You won't need this because it's part of the main cpu interface

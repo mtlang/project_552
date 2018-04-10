@@ -90,6 +90,7 @@ always @* begin
 	4'h9: begin	// SW
 		assign ALU_OP = 4'b0110;
 		assign IMM = 1;
+		assign SHIFT = 1;
 		assign MemWrite = 1;
 	end
 	4'hA: begin	// LHB

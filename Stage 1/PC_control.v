@@ -33,10 +33,10 @@ assign branch = (C == 3'b000) ? ~F[2] :					// Not Equal (Z=0)
 assign I_shift = {I[7:0], 1'b0};
 
 // Instantiate adders for PC calculations
-addsub_16bit adder1(.Sum(PC_val), .Ovfl(ovfl[0]), .A(PC_in), .B(16'h0002), .sub(1'b0));
-addsub_16bit adder2(.Sum(PC_branch_val), .Ovfl(ovfl[1]), .A(PC_val), .B({7'h00, I_shift}), .sub(1'b0));
-addsub_16bit adder3(.Sum(PC_Plus_Two), .Ovfl(ovfl[0]), .A(PC_val), .B(16'h0002), .sub(1'b0));
+addsub_16bit adder1(.Sum(PC_Plus_Two), .Ovfl(ovfl[0]), .A(PC_in), .B(16'h0002), .sub(1'b0));
+addsub_16bit adder2(.Sum(PC_branch_val), .Ovfl(ovfl[1]), .A(PC_Plus_Two), .B({7'h00, I_shift}), .sub(1'b0));
+//addsub_16bit adder3(.Sum(PC_Plus_Two), .Ovfl(ovfl[0]), .A(PC_val), .B(16'h0002), .sub(1'b0));
 
-assign PC_out = (branch & BRANCH) ? PC_branch_val : PC_val;
+assign PC_out = (branch & BRANCH) ? PC_branch_val : PC_Plus_Two;
 
 endmodule
