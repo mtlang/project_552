@@ -101,7 +101,7 @@ PC_Reg PC(.clk(clk), .rst(rst), .D(PC_final), .WriteReg(~Stall), .Q(PC_in));
 hazard_detection_unit HDU(.HLT(hlt), .Branch(BRANCH), .ID_instruction(instruction(7:0)), .EX_BR(EX_BR), .EX_dstreg(EX_dstreg), .EX_MemRead(EX_MemRead), .Stall(Stall), .Flush(Flush));
 
 //Data Forwarding Unit
-
+forwarding FWD(.ALU_in1_sel(ALU_in1_sel), .ALU_in2_sel(ALU_in2_sel), .EX_Rs(EX_Rs), .EX_Rt(EX_Rt), .MEM_Rd(MEM_Rd), .WB_Rd(WB_Rd));
 
 // PC Control
 
