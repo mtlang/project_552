@@ -52,7 +52,6 @@ wire pc_branch;					// Branch signal determined by condition codes
 wire [2:0] flags;				// Output from Flag register
 wire [8:0] I_shift;				// Value of immediate left shifted by 1
 wire [15:0] PC_in;				// Value of PC read from PC Reg
-wire [15:0] PC_plus_inter;		// Itermediate value of PC+2
 wire [15:0] PC_plus_two;		// Value of current pc + 2 for PCS instruction
 wire [15:0] PC_branchi;			// Value of PC+2+(Imm<<1)
 wire [15:0] PC_next;			// Value of PC after PC_control
@@ -70,7 +69,7 @@ wire [15:0] ALU_result;			// Result of ALU operation
 //////////////////////////////////
 
 // Writes to Data Memory
-memory1cData DataMem(.data_out(data_out), .data_in(MEM_src_data2), .addr(MEM_ALU_result), 
+memory1cData DataMem(.data_out(data_out), .data_in(MEM_data_write), .addr(MEM_ALU_result), 
 			.enable(MEM_MemWrite | MEM_MemRead), .wr(MEM_MemWrite), .clk(clk), .rst(rst));
 
 // Reads from Instruction Memory
@@ -104,7 +103,6 @@ hazard_detection_unit HDU(.HLT(hlt), .Branch(BRANCH), .ID_instruction(instructio
 forwarding FWD(.ALU_in1_sel(ALU_in1_sel), .ALU_in2_sel(ALU_in2_sel), .EX_Rs(EX_Rs), .EX_Rt(EX_Rt), .MEM_Rd(MEM_Rd), .WB_Rd(WB_Rd));
 
 // PC Control
-
 assign pc_branch = (cc == 3'b000) ? ~flags[2] :					// Not Equal (Z=0)
 		(cc == 3'b001) ? flags[2] :							// Equal (Z=1)
 		(cc == 3'b010) ? ~flags[2] & ~flags[0] :					// Greater than (Z=N=0)
@@ -131,13 +129,13 @@ assign extended_immediate = {8'h00, ID_instruction[7:0]};	// immediate value for
 assign data_out_final = (WB_MemToReg) ? WB_data_out : WB_ALU_result;	// Data to Reg File is from Data Mem or ALU
 
 // Inputs to Register File
-assign srcReg1 = ID_instruction[7:4];
+assign srcReg1 = (MEM_MemWrite) ? ID_instruction[11:8] : ID_instruction[7:4];
 assign srcReg2 = (SHIFT) ? ID_instruction[7:4] : (IMM) ? ID_instruction[11:8] : ID_instruction[3:0];	// Mux for read reg 2 input
 assign dstReg = WB_instruction[11:8];
 assign data_write_reg = (PCS) ? WB_PC_plus_two : data_out_final;	// Mux for write data input
 
 // Inputs to Data Memory
-assign data_write = MEM_src_data2;
+assign data_write = (MEM_MemWrite) ? MEM_src_data1 : MEM_src_data2;
 
 // Inputs to ALU
 assign ALU_in1_int = (IMM) ? EX_extended_immediate : EX_src_data1;	// Mux for non-forwarded alu in1
@@ -149,7 +147,7 @@ mux_3_1 ALU_in2_mux(.out(ALU_in2), .sel(ALU_in2_sel), .in1(MEM_ALU_result),
 
 // PC Stuff
 assign PC_final = (rst) ? 16'h0000 :		// RESET
-				  (EX_BR) ? EX_src_data1 :		// BR mux	// TODO Need to change this, BR depends on cc's
+				  (EX_BR & EX_pc_branch) ? EX_src_data1 :		// BR mux	// TODO Need to change this, BR depends on cc's
 				  PC_next;					// default
 				  
 assign pc = PC_in;	// current value of PC during a given cycle

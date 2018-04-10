@@ -128,7 +128,6 @@ case (ALU_OP)
 	4'b1001: begin
 		assign alu_out = sum_16b;
 		assign flags_out = |sum_16b ? {1'b0,Flags[1],Flags[0]} : {1'b1,Flags[1],Flags[0]};
-		assign flags_out = {Flags[2],Flags[1],sum_16b[15]};
 		// Flags[1] set by Ovflw signal in module
 	end
 	
@@ -136,7 +135,6 @@ case (ALU_OP)
 	4'b1010 : begin
 		assign alu_out = sum_16b;
 		assign flags_out = |sum_16b ? {1'b0,Flags[1],Flags[0]} : {1'b1,Flags[1],Flags[0]};
-		assign flags_out = {Flags[2],Flags[1],sum_16b[15]};
 		// Flags[1] set by Ovflw signal in module
 	end
 
@@ -147,7 +145,7 @@ case (ALU_OP)
 	end
 
 	default : begin
-		assign alu_out = 16'hxxxx;
+		assign alu_out = 16'h0000;
 		assign flags_out = Flags;
 	end
 

@@ -1,11 +1,4 @@
-{I:/GitHub/project_552/Stage 2/instruction_control.v} {1 {vlog -work work -vopt -stats=none {I:/GitHub/project_552/Stage 2/instruction_control.v}
-Model Technology ModelSim SE vlog 10.3c Compiler 2014.07 Jul 19 2014
--- Compiling module instruction_control
-
-Top level modules:
-	instruction_control
-
-} {} {}} {I:/GitHub/project_552/Stage 2/WriteDecoder_4_16.v} {1 {vlog -work work -vopt -stats=none {I:/GitHub/project_552/Stage 2/WriteDecoder_4_16.v}
+{I:/GitHub/project_552/Stage 2/WriteDecoder_4_16.v} {1 {vlog -work work -vopt -stats=none {I:/GitHub/project_552/Stage 2/WriteDecoder_4_16.v}
 Model Technology ModelSim SE vlog 10.3c Compiler 2014.07 Jul 19 2014
 -- Compiling module WriteDecoder_4_16
 
@@ -25,13 +18,6 @@ Model Technology ModelSim SE vlog 10.3c Compiler 2014.07 Jul 19 2014
 
 Top level modules:
 	dff
-
-} {} {}} {I:/GitHub/project_552/Stage 2/PC_control.v} {1 {vlog -work work -vopt -stats=none {I:/GitHub/project_552/Stage 2/PC_control.v}
-Model Technology ModelSim SE vlog 10.3c Compiler 2014.07 Jul 19 2014
--- Compiling module PC_control
-
-Top level modules:
-	PC_control
 
 } {} {}} {I:/GitHub/project_552/Stage 2/PADDSB_16bit.v} {1 {vlog -work work -vopt -stats=none {I:/GitHub/project_552/Stage 2/PADDSB_16bit.v}
 Model Technology ModelSim SE vlog 10.3c Compiler 2014.07 Jul 19 2014
@@ -98,13 +84,6 @@ Model Technology ModelSim SE vlog 10.3c Compiler 2014.07 Jul 19 2014
 Top level modules:
 	PC_Reg
 
-} {} {}} {I:/GitHub/project_552/Stage 2/full_adder_1bit.v} {1 {vlog -work work -vopt -stats=none {I:/GitHub/project_552/Stage 2/full_adder_1bit.v}
-Model Technology ModelSim SE vlog 10.3c Compiler 2014.07 Jul 19 2014
--- Compiling module full_adder_1bit
-
-Top level modules:
-	full_adder_1bit
-
 } {} {}} {I:/GitHub/project_552/Stage 2/reduction_unit_16bit.v} {1 {vlog -work work -vopt -stats=none {I:/GitHub/project_552/Stage 2/reduction_unit_16bit.v}
 Model Technology ModelSim SE vlog 10.3c Compiler 2014.07 Jul 19 2014
 -- Compiling module reduction_unit_16bit
@@ -112,12 +91,12 @@ Model Technology ModelSim SE vlog 10.3c Compiler 2014.07 Jul 19 2014
 Top level modules:
 	reduction_unit_16bit
 
-} {} {}} {I:/GitHub/project_552/Stage 2/ReadDecoder_4_16.v} {1 {vlog -work work -vopt -stats=none {I:/GitHub/project_552/Stage 2/ReadDecoder_4_16.v}
+} {} {}} {I:/GitHub/project_552/Stage 2/full_adder_1bit.v} {1 {vlog -work work -vopt -stats=none {I:/GitHub/project_552/Stage 2/full_adder_1bit.v}
 Model Technology ModelSim SE vlog 10.3c Compiler 2014.07 Jul 19 2014
--- Compiling module ReadDecoder_4_16
+-- Compiling module full_adder_1bit
 
 Top level modules:
-	ReadDecoder_4_16
+	full_adder_1bit
 
 } {} {}} {I:/GitHub/project_552/Stage 2/S18_cpu_testbench_phase1.v} {1 {vlog -work work -vopt -stats=none {I:/GitHub/project_552/Stage 2/S18_cpu_testbench_phase1.v}
 Model Technology ModelSim SE vlog 10.3c Compiler 2014.07 Jul 19 2014
@@ -126,26 +105,12 @@ Model Technology ModelSim SE vlog 10.3c Compiler 2014.07 Jul 19 2014
 Top level modules:
 	cpu_tb
 
-} {} {}} {I:/GitHub/project_552/Stage 2/S18_cpu_testbench_phase2.v} {1 {vlog -work work -vopt -stats=none {I:/GitHub/project_552/Stage 2/S18_cpu_testbench_phase2.v}
+} {} {}} {I:/GitHub/project_552/Stage 2/ReadDecoder_4_16.v} {1 {vlog -work work -vopt -stats=none {I:/GitHub/project_552/Stage 2/ReadDecoder_4_16.v}
 Model Technology ModelSim SE vlog 10.3c Compiler 2014.07 Jul 19 2014
--- Compiling module cpu_ptb
+-- Compiling module ReadDecoder_4_16
 
 Top level modules:
-	cpu_ptb
-
-} {} {}} {I:/GitHub/project_552/Stage 2/CLA_16bit.v} {1 {vlog -work work -vopt -stats=none {I:/GitHub/project_552/Stage 2/CLA_16bit.v}
-Model Technology ModelSim SE vlog 10.3c Compiler 2014.07 Jul 19 2014
--- Compiling module CLA_16bit
-
-Top level modules:
-	CLA_16bit
-
-} {} {}} {I:/GitHub/project_552/Stage 2/addsub_4bit.v} {1 {vlog -work work -vopt -stats=none {I:/GitHub/project_552/Stage 2/addsub_4bit.v}
-Model Technology ModelSim SE vlog 10.3c Compiler 2014.07 Jul 19 2014
--- Compiling module addsub_4bit
-
-Top level modules:
-	addsub_4bit
+	ReadDecoder_4_16
 
 } {} {}} {I:/GitHub/project_552/Stage 2/RegisterFile_tb.sv} {1 {vlog -work work -vopt -sv -stats=none {I:/GitHub/project_552/Stage 2/RegisterFile_tb.sv}
 Model Technology ModelSim SE vlog 10.3c Compiler 2014.07 Jul 19 2014
@@ -154,12 +119,19 @@ Model Technology ModelSim SE vlog 10.3c Compiler 2014.07 Jul 19 2014
 Top level modules:
 	RegisterFile_tb
 
-} {} {}} {I:/GitHub/project_552/Stage 2/add_sub_16bit.v} {1 {vlog -work work -vopt -stats=none {I:/GitHub/project_552/Stage 2/add_sub_16bit.v}
+} {} {}} {I:/GitHub/project_552/Stage 2/addsub_4bit.v} {1 {vlog -work work -vopt -stats=none {I:/GitHub/project_552/Stage 2/addsub_4bit.v}
 Model Technology ModelSim SE vlog 10.3c Compiler 2014.07 Jul 19 2014
--- Compiling module add_sub_16bit
+-- Compiling module addsub_4bit
 
 Top level modules:
-	add_sub_16bit
+	addsub_4bit
+
+} {} {}} {I:/GitHub/project_552/Stage 2/CLA_16bit.v} {1 {vlog -work work -vopt -stats=none {I:/GitHub/project_552/Stage 2/CLA_16bit.v}
+Model Technology ModelSim SE vlog 10.3c Compiler 2014.07 Jul 19 2014
+-- Compiling module CLA_16bit
+
+Top level modules:
+	CLA_16bit
 
 } {} {}} {I:/GitHub/project_552/Stage 2/Register_No_Bitcell.v} {1 {vlog -work work -vopt -stats=none {I:/GitHub/project_552/Stage 2/Register_No_Bitcell.v}
 Model Technology ModelSim SE vlog 10.3c Compiler 2014.07 Jul 19 2014
@@ -176,12 +148,12 @@ Top level modules:
 	register_4bit
 	register_1bit
 
-} {} {}} {I:/GitHub/project_552/Stage 2/cpu.v} {1 {vlog -work work -vopt -stats=none {I:/GitHub/project_552/Stage 2/cpu.v}
+} {} {}} {I:/GitHub/project_552/Stage 2/add_sub_16bit.v} {1 {vlog -work work -vopt -stats=none {I:/GitHub/project_552/Stage 2/add_sub_16bit.v}
 Model Technology ModelSim SE vlog 10.3c Compiler 2014.07 Jul 19 2014
--- Compiling module cpu
+-- Compiling module add_sub_16bit
 
 Top level modules:
-	cpu
+	add_sub_16bit
 
 } {} {}} {I:/GitHub/project_552/Stage 2/addsub_16bit.v} {1 {vlog -work work -vopt -stats=none {I:/GitHub/project_552/Stage 2/addsub_16bit.v}
 Model Technology ModelSim SE vlog 10.3c Compiler 2014.07 Jul 19 2014
