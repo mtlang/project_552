@@ -139,11 +139,11 @@ assign data_write = (MEM_MemWrite) ? MEM_src_data1 : MEM_src_data2;
 
 // Inputs to ALU
 assign ALU_in1_int = (IMM) ? EX_extended_immediate : EX_src_data1;	// Mux for non-forwarded alu in1
-mux_3_1 ALU_in1_mux(.out(ALU_in1), .sel(ALU_in1_sel), .in1(MEM_ALU_result),
-		.in2(data_out_final), .in3(ALU_in1_int)); 					// Mux for ALU in1
+mux_3_1 ALU_in1_mux(.out(ALU_in1), .sel(ALU_in1_sel), .in1(ALU_in1_int),
+		.in2(data_out_final), .in3(MEM_ALU_result)); 					// Mux for ALU in1
 		
-mux_3_1 ALU_in2_mux(.out(ALU_in2), .sel(ALU_in2_sel), .in1(MEM_ALU_result),
-		.in2(data_out_final), .in3(EX_src_data2));					// Mux for ALU in2
+mux_3_1 ALU_in2_mux(.out(ALU_in2), .sel(ALU_in2_sel), .in1(EX_src_data2),
+		.in2(data_out_final), .in3(MEM_ALU_result));					// Mux for ALU in2
 
 // PC Stuff
 assign PC_final = (rst) ? 16'h0000 :		// RESET
