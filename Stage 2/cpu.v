@@ -63,6 +63,46 @@ wire [15:0] ALU_in1;			// First input to ALU
 wire [15:0] ALU_in2;			// Second input to ALU
 wire [15:0] ALU_result;			// Result of ALU operation
 
+// Pipeline Signals
+// ID
+wire ID_BR;
+wire [3:0] ID_ALU_OP;
+wire [3:0] ID_dstreg;
+wire [15:0] ID_PC_plus_two;
+wire [15:0] ID_instruction;
+
+// EX
+wire EX_BR;
+wire EX_IMM;
+wire EX_MemWrite;
+wire EX_MemRead;
+wire EX_MemToReg;
+wire EX_FlagWrite;
+wire [2:0] EX_cc;
+wire [3:0] EX_dstreg;
+wire [3:0] EX_ALU_OP;
+wire [15:0] EX_PC_plus_two;
+wire [15:0] EX_instruction;
+wire [15:0] EX_PC_branchi;
+wire [15:0] EX_extended_immediate;
+wire [15:0] EX_src_data1;
+wire [15:0] EX_src_data2;
+
+// MEM
+wire MEM_MemWrite;
+wire MEM_MemRead;
+wire MEM_MemToReg;
+wire [15:0] MEM_data_write;
+wire [15:0] MEM_ALU_result;
+wire [15:0] MEM_PC_plus_two;
+wire [15:0] MEM_instruction;
+
+// WB
+wire WB_MemToReg;
+wire [15:0] WB_PC_plus_two;
+wire [15:0] WB_instruction;
+wire [15:0] WB_data_out;
+wire [15:0] WB_ALU_result;
 
 //////////////////////////////////
 // Instantiate required modules //
@@ -96,13 +136,20 @@ ALU_16bit ALU(.ALU_OP(EX_ALU_OP), .SrcData1(ALU_in1), .SrcData2(ALU_in2), .Flags
 // PC
 PC_Reg PC(.clk(clk), .rst(rst), .D(PC_final), .WriteReg(~Stall), .Q(PC_in));
 
-//Hazard Detection Unit
-hazard_detection_unit HDU(.HLT(hlt), .Branch(BRANCH), .ID_instruction(instruction(7:0)), .EX_BR(EX_BR), .EX_dstreg(EX_dstreg), .EX_MemRead(EX_MemRead), .Stall(Stall), .Flush(Flush));
+// Hazard Detection Unit
+hazard_detection_unit HDU(.HLT(hlt), .Branch(BRANCH), .ID_instruction(ID_instruction[7:0]), .EX_BR(EX_BR), .EX_dstreg(EX_dstreg), .EX_MemRead(EX_MemRead), .Stall(Stall), .Flush(Flush));
 
-//Data Forwarding Unit
+// Data Forwarding Unit
 forwarding FWD(.ALU_in1_sel(ALU_in1_sel), .ALU_in2_sel(ALU_in2_sel), .EX_Rs(EX_Rs), .EX_Rt(EX_Rt), .MEM_Rd(MEM_Rd), .WB_Rd(WB_Rd));
 
-// PC Control
+////////////////////////
+// Pipeline Registers //
+////////////////////////
+
+
+////////////////
+// PC Control //
+////////////////
 assign pc_branch = (cc == 3'b000) ? ~flags[2] :					// Not Equal (Z=0)
 		(cc == 3'b001) ? flags[2] :							// Equal (Z=1)
 		(cc == 3'b010) ? ~flags[2] & ~flags[0] :					// Greater than (Z=N=0)
@@ -135,7 +182,7 @@ assign dstReg = WB_instruction[11:8];
 assign data_write_reg = (PCS) ? WB_PC_plus_two : data_out_final;	// Mux for write data input
 
 // Inputs to Data Memory
-assign data_write = (MEM_MemWrite) ? MEM_src_data1 : MEM_src_data2;
+assign data_write = (EX_MemWrite) ? EX_src_data1 : EX_src_data2;
 
 // Inputs to ALU
 assign ALU_in1_int = (IMM) ? EX_extended_immediate : EX_src_data1;	// Mux for non-forwarded alu in1
@@ -147,7 +194,7 @@ mux_3_1 ALU_in2_mux(.out(ALU_in2), .sel(ALU_in2_sel), .in1(EX_src_data2),
 
 // PC Stuff
 assign PC_final = (rst) ? 16'h0000 :		// RESET
-				  (EX_BR & EX_pc_branch) ? EX_src_data1 :		// BR mux	// TODO Need to change this, BR depends on cc's
+				  (EX_BR & pc_branch) ? EX_src_data1 :		// BR mux	// TODO Need to change this, BR depends on cc's
 				  PC_next;					// default
 				  
 assign pc = PC_in;	// current value of PC during a given cycle

@@ -19,3 +19,13 @@ Stage 1/work/_info
 *.mpf
 Stage 2/dump.vcd
 Stage 2/Stage2ModelSim.cr.mti
+*.mpf
+Stage 2/Stage2ModelSim.mpf
+Stage 2/work/_info
+Stage 2/work/_lib.qdb
+Stage 2/work/_lib1_1.qdb
+Stage 2/work/_lib1_1.qpg
+Stage 2/work/_lib1_1.qtl
+*.qpg
+*.qtl
+*.qdb
