@@ -68,8 +68,8 @@ wire [15:0] ALU_result;			// Result of ALU operation
 //////////////////////////////////
 
 // Writes to Data Memory
-memory1cData DataMem(.data_out(data_out), .data_in(src_data2), .addr(ALU_result), 
-			.enable(MemWrite | MemRead), .wr(MemWrite), .clk(clk), .rst(rst));
+memory1cData DataMem(.data_out(data_out), .data_in(MEM_src_data2), .addr(MEM_ALU_result), 
+			.enable(MEM_MemWrite | MEM_MemRead), .wr(MEM_MemWrite), .clk(clk), .rst(rst));
 
 // Reads from Instruction Memory
 memory1c InstMem(.data_out(instruction), .data_in(16'hxxxx), .addr(PC_in), .enable(rst_n), 
@@ -77,23 +77,23 @@ memory1c InstMem(.data_out(instruction), .data_in(16'hxxxx), .addr(PC_in), .enab
 
 // Register File
 RegisterFile Regs(.clk(clk), .rst(rst), .SrcReg1(srcReg1), .SrcReg2(srcReg2), .DstReg(dstReg), 
-			.WriteReg(RegWrite), .DstData(data_write_reg), .SrcData1(src_data1), .SrcData2(src_data2));
+			.WriteReg(WB_RegWrite), .DstData(data_write_reg), .SrcData1(src_data1), .SrcData2(src_data2));
 
 // Flag Register
-Flag_Reg F(.clk(clk), .rst(rst), .D(ALU_flags), .WriteReg(FlagWrite), .Q(flags));
+Flag_Reg F(.clk(clk), .rst(rst), .D(ALU_flags), .WriteReg(EX_FlagWrite), .Q(flags));
 
 // Instruction Control block
-instruction_control Control(.opcode(instruction[15:12]), .ALU_OP(ALU_OP), .HLT(hlt), .BR(BR), 
+instruction_control Control(.opcode(ID_instruction[15:12]), .ALU_OP(ALU_OP), .HLT(hlt), .BR(BR), 
 							.IMM(IMM), .PCS(PCS), .MemWrite(MemWrite), .MemRead(MemRead), 
 							.MemToReg(MemToReg), .RegWrite(RegWrite), .FlagWrite(FlagWrite), 
 							.BRANCH(BRANCH), .SHIFT(SHIFT));
 
 // ALU
-ALU_16bit ALU(.ALU_OP(ALU_OP), .SrcData1(ALU_in1), .SrcData2(ALU_in2), .Flags(ALU_flags),
+ALU_16bit ALU(.ALU_OP(EX_ALU_OP), .SrcData1(ALU_in1), .SrcData2(ALU_in2), .Flags(ALU_flags),
 				.Result(ALU_result), .rst(rst));
 
 // PC
-PC_Reg PC(.clk(clk), .rst(rst), .D(PC_final), .WriteReg(1'b1), .Q(PC_in));	// need write enable?
+PC_Reg PC(.clk(clk), .rst(rst), .D(PC_final), .WriteReg(~Stall), .Q(PC_in));
 
 // PC Control
 
@@ -109,41 +109,39 @@ assign pc_branch = (cc == 3'b000) ? ~flags[2] :					// Not Equal (Z=0)
 assign I_shift = {immediate[7:0], 1'b0};
 
 addsub_16bit adder1(.Sum(PC_plus_two), .Ovfl(), .A(PC_in), .B(16'h0002), .sub(1'b0));	// PC+2 adder
-addsub_16bit adder2(.Sum(PC_branchi), .Ovfl(), .A(PC_plus_two), .B({7'h0, I_shift}), .sub(1'b0));	// PC+2+immediate adder
-//addsub_16bit adder3(.Sum(PC_plus_two), .Ovfl(), .A(PC_plus_inter), .B(16'h0002), .sub(1'b0));	// Add another 2 because of mem accesses
-// Why did we do the thing above?
+addsub_16bit adder2(.Sum(PC_branchi), .Ovfl(), .A(ID_PC_plus_two), .B({7'h0, I_shift}), .sub(1'b0));	// PC+2+immediate adder
 
 assign PC_next = (BRANCH & pc_branch) ? PC_branchi : PC_plus_two;
-
-//PC_control PC_Cont(.C(cc), .I(immediate), .F(flags), .PC_in(PC_in), 
-//				.PC_out(PC_next), .PC_Plus_Two(PC_plus_two), .BRANCH(BRANCH));
 	
 /////////////////////////
 // Combinational Logic //
 /////////////////////////
 assign rst = ~rst_n;					// Invert since reset isn't consistent across modules...
-assign cc = instruction[11:9];			// Bits containing the Condition Code for branches
-assign immediate = instruction[8:0];	// Immediate value for Branch instruction
-assign extended_immediate = {8'h00, instruction[7:0]};	// immediate value for alu ops
-assign data_out_final = (MemToReg) ? data_out : ALU_result;	// Data to Reg File is from Data Mem or ALU
+assign cc = ID_instruction[11:9];		// Bits containing the Condition Code for branches
+assign immediate = ID_instruction[8:0];	// Immediate value for Branch instruction
+assign extended_immediate = {8'h00, ID_instruction[7:0]};	// immediate value for alu ops
+assign data_out_final = (WB_MemToReg) ? WB_data_out : WB_ALU_result;	// Data to Reg File is from Data Mem or ALU
 
 // Inputs to Register File
-assign srcReg1 = instruction[7:4];
-assign srcReg2 = (SHIFT) ? instruction[7:4] : (IMM) ? instruction[11:8] : instruction[3:0];	// Mux for read reg 2 input
-assign dstReg = instruction[11:8];
-assign data_write_reg = (PCS) ? PC_plus_two : data_out_final;	// Mux for write data input
+assign srcReg1 = ID_instruction[7:4];
+assign srcReg2 = (SHIFT) ? ID_instruction[7:4] : (IMM) ? ID_instruction[11:8] : ID_instruction[3:0];	// Mux for read reg 2 input
+assign dstReg = WB_instruction[11:8];
+assign data_write_reg = (PCS) ? WB_PC_plus_two : data_out_final;	// Mux for write data input
 
 // Inputs to Data Memory
-assign data_write = src_data2;
+assign data_write = MEM_src_data2;
 
 // Inputs to ALU
-assign ALU_in1 = (IMM) ? extended_immediate : src_data1;	// Mux for ALU input, zero extend imm
-assign ALU_in2 = src_data2;
+assign ALU_in1_int = (IMM) ? EX_extended_immediate : EX_src_data1;	// Mux for non-forwarded alu in1
+mux_3_1 ALU_in1_mux(.out(ALU_in1), .sel(ALU_in1_sel), .in1(MEM_ALU_result),
+		.in2(data_out_final), .in3(ALU_in1_int)); 					// Mux for ALU in1
+		
+mux_3_1 ALU_in2_mux(.out(ALU_in2), .sel(ALU_in2_sel), .in1(MEM_ALU_result),
+		.in2(data_out_final), .in3(EX_src_data2));					// Mux for ALU in2
 
 // PC Stuff
-assign PC_final = (BR) ? src_data1 :		// BR mux	// TODO Need to change this, BR depends on cc's
-				  (hlt) ? PC_in : 			// HLT mux
-				  (rst) ? 16'h0000 :		// RESET
+assign PC_final = (rst) ? 16'h0000 :		// RESET
+				  (EX_BR) ? EX_src_data1 :		// BR mux	// TODO Need to change this, BR depends on cc's
 				  PC_next;					// default
 				  
 assign pc = PC_in;	// current value of PC during a given cycle
