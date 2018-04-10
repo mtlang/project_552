@@ -139,6 +139,7 @@ module cpu_ptb();
    // Is processor halted (1 bit signal)
    
 
+// TODO: Hook up signals to the appropriate stages in the pipeline
    assign Inst = DUT.instruction;
    //Instruction fetched in the current cycle
    
