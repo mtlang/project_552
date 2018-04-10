@@ -23,6 +23,8 @@ wire RegWrite;					// Control signal for writng to Register File
 wire FlagWrite;					// Control signal for writing the Flag Register
 wire BRANCH;					// Control signal for if instruction is a branch
 wire SHIFT;						// Control signal for if instruction is a shift/rotate
+wire Stall;						// Control signal for stalling the pipeline
+wire Flush;						// Control signal for flushing data from IF/ID stage
 wire [3:0] ALU_OP;				// Control signal for ALU Operation to be performed
 
 // Instruction Memory Signals
@@ -94,6 +96,12 @@ ALU_16bit ALU(.ALU_OP(EX_ALU_OP), .SrcData1(ALU_in1), .SrcData2(ALU_in2), .Flags
 
 // PC
 PC_Reg PC(.clk(clk), .rst(rst), .D(PC_final), .WriteReg(~Stall), .Q(PC_in));
+
+//Hazard Detection Unit
+hazard_detection_unit HDU(.HLT(hlt), .Branch(BRANCH), .ID_instruction(instruction(7:0)), .EX_BR(EX_BR), .EX_dstreg(EX_dstreg), .EX_MemRead(EX_MemRead), .Stall(Stall), .Flush(Flush));
+
+//Data Forwarding Unit
+
 
 // PC Control
 
