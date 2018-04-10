@@ -1,0 +1,21 @@
+
+*.mti
+*.vcd
+*.img
+*.log
+*.trace
+*.wlf
+*.qpg
+*.qtl
+*.qdb
+*.mti
+*.vcd
+Stage 1/work/_vmake
+*.vcd
+*.mti
+Stage 1/work/_info
+*.vcd
+*.mti
+*.mpf
+Stage 2/dump.vcd
+Stage 2/Stage2ModelSim.cr.mti
