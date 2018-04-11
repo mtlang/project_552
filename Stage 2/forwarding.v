@@ -1,4 +1,5 @@
 module forwarding (ALU_in1_sel, ALU_in2_sel, EX_Rs, EX_Rt, MEM_Rd, WB_Rd);
+
 input [3:0] MEM_Rd, WB_Rd, EX_Rs, EX_Rt;
 output [1:0] ALU_in1_sel, ALU_in2_sel;
 

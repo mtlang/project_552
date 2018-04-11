@@ -58,6 +58,8 @@ wire [15:0] PC_next;			// Value of PC after PC_control
 wire [15:0] PC_final;			// Next value of PC after current instructions execution
 
 // ALU Signals
+wire [1:0] ALU_in1_sel;			// Select for 3:1 mux of ALU input 1
+wire [1:0] ALU_in2_sel;			// Select for 3:1 mux of ALU input 2
 wire [2:0] ALU_flags;			// Flag values of ALU operation
 wire [15:0] ALU_in1;			// First input to ALU
 wire [15:0] ALU_in2;			// Second input to ALU
@@ -67,19 +69,21 @@ wire [15:0] ALU_result;			// Result of ALU operation
 // ID
 wire ID_BR;
 wire [3:0] ID_ALU_OP;
-wire [3:0] ID_dstreg;
 wire [15:0] ID_PC_plus_two;
 wire [15:0] ID_instruction;
 
 // EX
 wire EX_BR;
+wire EX_BRANCH;
 wire EX_IMM;
 wire EX_MemWrite;
 wire EX_MemRead;
 wire EX_MemToReg;
 wire EX_FlagWrite;
 wire [2:0] EX_cc;
-wire [3:0] EX_dstreg;
+wire [3:0] EX_dstReg;
+wire [3:0] EX_Rs;
+wire [3:0] EX_Rt;
 wire [3:0] EX_ALU_OP;
 wire [15:0] EX_PC_plus_two;
 wire [15:0] EX_instruction;
@@ -92,6 +96,8 @@ wire [15:0] EX_src_data2;
 wire MEM_MemWrite;
 wire MEM_MemRead;
 wire MEM_MemToReg;
+wire [3:0] MEM_dstreg;
+wire [3:0] MEM_Rd;
 wire [15:0] MEM_data_write;
 wire [15:0] MEM_ALU_result;
 wire [15:0] MEM_PC_plus_two;
@@ -99,6 +105,7 @@ wire [15:0] MEM_instruction;
 
 // WB
 wire WB_MemToReg;
+wire [3:0] WB_Rd;
 wire [15:0] WB_PC_plus_two;
 wire [15:0] WB_instruction;
 wire [15:0] WB_data_out;
@@ -137,7 +144,8 @@ ALU_16bit ALU(.ALU_OP(EX_ALU_OP), .SrcData1(ALU_in1), .SrcData2(ALU_in2), .Flags
 PC_Reg PC(.clk(clk), .rst(rst), .D(PC_final), .WriteReg(~Stall), .Q(PC_in));
 
 // Hazard Detection Unit
-hazard_detection_unit HDU(.HLT(hlt), .Branch(BRANCH), .ID_instruction(ID_instruction[7:0]), .EX_BR(EX_BR), .EX_dstreg(EX_dstreg), .EX_MemRead(EX_MemRead), .Stall(Stall), .Flush(Flush));
+hazard_detection_unit HDU(.HLT(hlt), .Branch(EX_BRANCH), .ID_instruction(ID_instruction[7:0]), .EX_BR(EX_BR), .EX_dstreg(EX_dstreg), 
+						.EX_MemRead(EX_MemRead), .Stall(Stall), .Flush(Flush));
 
 // Data Forwarding Unit
 forwarding FWD(.ALU_in1_sel(ALU_in1_sel), .ALU_in2_sel(ALU_in2_sel), .EX_Rs(EX_Rs), .EX_Rt(EX_Rt), .MEM_Rd(MEM_Rd), .WB_Rd(WB_Rd));
@@ -145,7 +153,31 @@ forwarding FWD(.ALU_in1_sel(ALU_in1_sel), .ALU_in2_sel(ALU_in2_sel), .EX_Rs(EX_R
 ////////////////////////
 // Pipeline Registers //
 ////////////////////////
+IF_ID_reg ifid(.clk(clk), .rst(rst), .write(~Stall), .PC_plus_two(PC_plus_two), .instruction(instruction), 
+				.flush(Flush), .ID_PC_plus_two(ID_PC_plus_two), .ID_instruction(ID_instruction));
+				
+ID_EX_reg idex(.clk(clk), .rst(rst), .write(~Stall), .ID_PC_plus_two(ID_PC_plus_two), .ID_instruction(ID_instruction), 
+				.src_data1(src_data1), .src_data2(src_data2), .extended_immediate(extended_immediate), 
+				.PC_branchi(PC_branchi), .ALU_OP(ALU_OP), .IMM(IMM), .cc(cc), .FlagWrite(FlagWrite),
+				.BRANCH(BRANCH), .BR(BR), .RegWrite(RegWrite), .MemWrite(MemWrite), .MemRead(MemRead), 
+				.MemToReg(MemToReg), .EX_PC_plus_two(EX_PC_plus_two), .EX_src_data1(EX_src_data1), 
+				.EX_src_data2(EX_src_data2), .EX_extended_immediate(EX_extended_immediate), 
+				.EX_PC_branchi(EX_PC_branchi), .EX_ALU_OP(EX_ALU_OP), .EX_Rs(EX_Rs), .EX_Rt(EX_Rt), 
+				.EX_dstReg(EX_dstReg), .EX_IMM(EX_IMM), .EX_cc(EX_cc), .EX_FlagWrite(EX_FlagWrite), 
+				.EX_BRANCH(EX_BRANCH), .EX_BR(EX_BR), .EX_RegWrite(EX_RegWrite), 
+				.EX_MemWrite(EX_MemWrite), .EX_MemRead(EX_MemRead), .EX_MemToReg(EX_MemToReg));
 
+EX_MEM_reg exmem(.clk(clk), .rst(rst), .write(~Stall), .ALU_result(ALU_result), .EX_PC_plus_two(EX_PC_plus_two), 
+				.data_write(data_write), .EX_dstReg(EX_dstReg), .EX_RegWrite(EX_RegWrite), 
+				.EX_MemWrite(EX_MemWrite), .EX_MemRead(EX_MemRead), .MEM_ALU_result(MEM_ALU_result), 
+				.MEM_PC_plus_two(MEM_PC_plus_two), .MEM_data_write(MEM_data_write), .MEM_Rd(MEM_Rd), 
+				.MEM_RegWrite(MEM_RegWrite), .MEM_MemWrite(MEM_MemWrite), .MEM_MemRead(MEM_MemRead), 
+				.EX_MemToReg(EX_MemToReg), .MEM_MemToReg(MEM_MemToReg));
+
+MEM_WB_reg memwb(.clk(clk), .rst(rst), .write(~Stall), .MEM_ALU_result(MEM_ALU_result), .data_out(data_out), 
+				.MEM_PC_plus_two(MEM_PC_plus_two), .MEM_Rd(MEM_Rd), .MEM_RegWrite(MEM_RegWrite), 
+				.WB_ALU_result(WB_ALU_result), .WB_data_out(WB_data_out), .WB_PC_plus_two(WB_PC_plus_two), 
+				.WB_Rd(WB_Rd), .WB_RegWrite(WB_RegWrite),.MEM_MemToReg(MEM_MemToReg), .WB_MemToReg(WB_MemToReg));
 
 ////////////////
 // PC Control //
@@ -164,7 +196,7 @@ assign I_shift = {immediate[7:0], 1'b0};
 addsub_16bit adder1(.Sum(PC_plus_two), .Ovfl(), .A(PC_in), .B(16'h0002), .sub(1'b0));	// PC+2 adder
 addsub_16bit adder2(.Sum(PC_branchi), .Ovfl(), .A(ID_PC_plus_two), .B({7'h0, I_shift}), .sub(1'b0));	// PC+2+immediate adder
 
-assign PC_next = (BRANCH & pc_branch) ? PC_branchi : PC_plus_two;
+assign PC_next = (EX_BRANCH & pc_branch) ? PC_branchi : PC_plus_two;
 	
 /////////////////////////
 // Combinational Logic //
