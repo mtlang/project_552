@@ -191,13 +191,6 @@ Model Technology ModelSim SE vlog 10.3c Compiler 2014.07 Jul 19 2014
 Top level modules:
 	hazard_detection_unit
 
-} {} {}} {I:/GitHub/project_552/Stage 2/cpu.v} {1 {vlog -work work -vopt -stats=none {I:/GitHub/project_552/Stage 2/cpu.v}
-Model Technology ModelSim SE vlog 10.3c Compiler 2014.07 Jul 19 2014
--- Compiling module cpu
-
-Top level modules:
-	cpu
-
 } {} {}} {I:/GitHub/project_552/Stage 2/addsub_16bit.v} {1 {vlog -work work -vopt -stats=none {I:/GitHub/project_552/Stage 2/addsub_16bit.v}
 Model Technology ModelSim SE vlog 10.3c Compiler 2014.07 Jul 19 2014
 -- Compiling module addsub_16bit

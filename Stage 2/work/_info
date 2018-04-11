@@ -152,15 +152,15 @@ r1
 !s85 0
 31
 !i10b 1
-!s100 LI]A7AR]JeI=3m5VG]3nC1
-ISBhR?Wl<0QS?>1Tz^?a6O2
+!s100 1T4fKVXHz:0o9:^JNo=X:1
+I5DZh;P^06beU9mhz>R^JW0
 R1
-w1523482142
+w1523486076
 8I:/GitHub/project_552/Stage 2/cpu.v
 FI:/GitHub/project_552/Stage 2/cpu.v
 L0 1
 R3
-!s108 1523482200.088000
+!s108 1523486864.759000
 !s107 I:/GitHub/project_552/Stage 2/cpu.v|
 !s90 -reportprogress|300|-work|work|-vopt|-stats=none|I:/GitHub/project_552/Stage 2/cpu.v|
 !i113 0
@@ -229,15 +229,15 @@ r1
 !s85 0
 31
 !i10b 1
-!s100 CVhd=QbE;E1k]Q^VQU2M?1
-I8jckV7RUWz`HhJk3:OMVO0
+!s100 =2c1lecIciW?5BE<8<ZQ90
+IXVA[`3XA4hZjdJaS:]XNc0
 R1
-Z5 w1523482421
+Z5 w1523486855
 Z6 8I:/GitHub/project_552/Stage 2/PipelineRegisters.v
 Z7 FI:/GitHub/project_552/Stage 2/PipelineRegisters.v
-L0 88
+L0 93
 R3
-Z8 !s108 1523482430.480000
+Z8 !s108 1523486865.719000
 Z9 !s107 I:/GitHub/project_552/Stage 2/PipelineRegisters.v|
 Z10 !s90 -reportprogress|300|-work|work|-vopt|-stats=none|I:/GitHub/project_552/Stage 2/PipelineRegisters.v|
 !i113 0
@@ -326,8 +326,8 @@ r1
 !s85 0
 31
 !i10b 1
-!s100 dXK6S;3REU88:h4[eff863
-IBzYW2lC]]DoLSoWCSzN^C3
+!s100 j>^VBI>=O4eEARo:FBU_?3
+I45>MFTalRKF:?lR=bV^zL0
 R1
 R5
 R6
@@ -405,13 +405,13 @@ r1
 !s85 0
 31
 !i10b 1
-!s100 D=2o`=2GKGJQjXnX^G;_N2
-IXgB4X60QgA4S5EE=O31<72
+!s100 K9dKdXXfFnZoH3o]iP9CS3
+IO]K:[mU_<KN[QlIlSH>bU3
 R1
 R5
 R6
 R7
-L0 126
+L0 132
 R3
 R8
 R9
@@ -617,20 +617,19 @@ Z27 !s90 -reportprogress|300|-work|work|-vopt|-stats=none|I:/GitHub/project_552/
 !i113 0
 R4
 vregister_1bit
-Z28 !s110 1523400104
+R0
+r1
+!s85 0
+31
 !i10b 1
 !s100 6Y>k@[9DJG1=09;9@?znl0
 IMEQQ<m]I7K?7>A7=3I`Mb0
-R0
 R1
 R22
 R23
 R24
 L0 86
 R3
-r1
-!s85 0
-31
 R25
 R26
 R27
@@ -656,7 +655,7 @@ R27
 !i113 0
 R4
 vregister_5bit
-R28
+Z28 !s110 1523400104
 !i10b 1
 !s100 XYXnX6VbiT70d[D?Z@=4d3
 IX2j8FBfY6aLQ=HfaC05@k1

@@ -76,6 +76,7 @@ wire [15:0] ID_PC_plus_two;
 wire [15:0] ID_instruction;
 
 // EX
+wire EX_PCS;
 wire EX_BR;
 wire EX_BRANCH;
 wire EX_IMM;
@@ -97,6 +98,7 @@ wire [15:0] EX_src_data1;
 wire [15:0] EX_src_data2;
 
 // MEM
+wire MEM_PCS;
 wire MEM_halt;
 wire MEM_MemWrite;
 wire MEM_MemRead;
@@ -109,6 +111,7 @@ wire [15:0] MEM_PC_plus_two;
 wire [15:0] MEM_instruction;
 
 // WB
+wire WB_PCS;
 wire WB_halt;
 wire WB_MemToReg;
 wire [3:0] WB_Rd;
@@ -160,6 +163,7 @@ forwarding FWD(.ALU_in1_sel(ALU_in1_sel), .ALU_in2_sel(ALU_in2_sel), .EX_Rs(EX_R
 ////////////////////////
 // Pipeline Registers //
 ////////////////////////
+// might need to prop the stall as write enables
 IF_ID_reg ifid(.clk(clk), .rst(rst), .write(~Stall), .PC_plus_two(PC_plus_two), .instruction(instruction), 
 				.flush(Flush), .ID_PC_plus_two(ID_PC_plus_two), .ID_instruction(ID_instruction));
 				
@@ -173,20 +177,21 @@ ID_EX_reg idex(.clk(clk), .rst(rst), .write(1'b1), .ID_PC_plus_two(ID_PC_plus_tw
 				.EX_dstReg(EX_dstReg), .EX_IMM(EX_IMM), .EX_cc(EX_cc), .EX_FlagWrite(EX_FlagWrite), 
 				.EX_BRANCH(EX_BRANCH), .EX_BR(EX_BR), .EX_RegWrite(EX_RegWrite), 
 				.EX_MemWrite(EX_MemWrite), .EX_MemRead(EX_MemRead), .EX_MemToReg(EX_MemToReg),
-				.EX_halt(EX_halt), .halt(halt));
+				.EX_halt(EX_halt), .halt(halt), .SHIFT(SHIFT), .EX_SHIFT(), .EX_PCS(EX_PCS), .PCS(PCS));
 
 EX_MEM_reg exmem(.clk(clk), .rst(rst), .write(1'b1), .ALU_result(ALU_result), .EX_PC_plus_two(EX_PC_plus_two), 
 				.data_write(data_write), .EX_dstReg(EX_dstReg), .EX_RegWrite(EX_RegWrite), 
 				.EX_MemWrite(EX_MemWrite), .EX_MemRead(EX_MemRead), .MEM_ALU_result(MEM_ALU_result), 
 				.MEM_PC_plus_two(MEM_PC_plus_two), .MEM_data_write(MEM_data_write), .MEM_Rd(MEM_Rd), 
 				.MEM_RegWrite(MEM_RegWrite), .MEM_MemWrite(MEM_MemWrite), .MEM_MemRead(MEM_MemRead), 
-				.EX_MemToReg(EX_MemToReg), .MEM_MemToReg(MEM_MemToReg), .EX_halt(EX_halt), .MEM_halt(MEM_halt));
+				.EX_MemToReg(EX_MemToReg), .MEM_MemToReg(MEM_MemToReg), .EX_halt(EX_halt), 
+				.MEM_halt(MEM_halt), .EX_PCS(EX_PCS), .MEM_PCS(MEM_PCS));
 
 MEM_WB_reg memwb(.clk(clk), .rst(rst), .write(1'b1), .MEM_ALU_result(MEM_ALU_result), .data_out(data_out), 
 				.MEM_PC_plus_two(MEM_PC_plus_two), .MEM_Rd(MEM_Rd), .MEM_RegWrite(MEM_RegWrite), 
 				.WB_ALU_result(WB_ALU_result), .WB_data_out(WB_data_out), .WB_PC_plus_two(WB_PC_plus_two), 
 				.WB_Rd(WB_Rd), .WB_RegWrite(WB_RegWrite),.MEM_MemToReg(MEM_MemToReg), .WB_MemToReg(WB_MemToReg),
-				.WB_halt(WB_halt), .MEM_halt(MEM_halt));
+				.WB_halt(WB_halt), .MEM_halt(MEM_halt), .MEM_PCS(MEM_PCS), .WB_PCS(WB_PCS));
 
 ////////////////
 // PC Control //
@@ -217,16 +222,16 @@ assign extended_immediate = {8'h00, ID_instruction[7:0]};	// immediate value for
 assign data_out_final = (WB_MemToReg) ? WB_data_out : WB_ALU_result;	// Data to Reg File is from Data Mem or ALU
 
 // Inputs to Register File
-assign srcReg1 = (MEM_MemWrite) ? ID_instruction[11:8] : ID_instruction[7:4];
+assign srcReg1 = (MemWrite) ? ID_instruction[11:8] : ID_instruction[7:4];
 assign srcReg2 = (SHIFT) ? ID_instruction[7:4] : (IMM) ? ID_instruction[11:8] : ID_instruction[3:0];	// Mux for read reg 2 input
-assign dstReg = WB_instruction[11:8];
-assign data_write_reg = (PCS) ? WB_PC_plus_two : data_out_final;	// Mux for write data input
+assign dstReg = WB_Rd;
+assign data_write_reg = (WB_PCS) ? WB_PC_plus_two : data_out_final;	// Mux for write data input
 
 // Inputs to Data Memory
 assign data_write = (EX_MemWrite) ? EX_src_data1 : EX_src_data2;
 
 // Inputs to ALU
-assign ALU_in1_int = (IMM) ? EX_extended_immediate : EX_src_data1;	// Mux for non-forwarded alu in1
+assign ALU_in1_int = (EX_IMM) ? EX_extended_immediate : EX_src_data1;	// Mux for non-forwarded alu in1
 mux_3_1 ALU_in1_mux(.out(ALU_in1), .sel(ALU_in1_sel), .in1(ALU_in1_int),
 		.in2(data_out_final), .in3(MEM_ALU_result)); 					// Mux for ALU in1
 		
