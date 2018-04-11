@@ -26,7 +26,7 @@ module ID_EX_reg(clk, rst, write, ID_PC_plus_two, ID_instruction, src_data1, src
 				PC_branchi, ALU_OP, IMM, cc, FlagWrite, BRANCH, BR, RegWrite, MemWrite, MemRead, MemToReg, 
 				EX_PC_plus_two, EX_src_data1, EX_src_data2, EX_extended_immediate, EX_PC_branchi,
 				EX_ALU_OP, EX_Rs, EX_Rt, EX_dstReg, EX_IMM, EX_cc, EX_FlagWrite, EX_BRANCH, EX_BR,
-				EX_RegWrite, EX_MemWrite, EX_MemRead, EX_MemToReg);
+				EX_RegWrite, EX_MemWrite, EX_MemRead, EX_MemToReg, EX_halt, halt);
 
 input clk, rst, write;
 input [15:0] ID_PC_plus_two;
@@ -36,7 +36,7 @@ input [15:0] extended_immediate;
 input [15:0] PC_branchi;
 input [3:0] ALU_OP;
 input [2:0] cc;
-input IMM, FlagWrite, BRANCH, BR, RegWrite, MemWrite, MemRead, MemToReg;
+input IMM, FlagWrite, BRANCH, BR, RegWrite, MemWrite, MemRead, MemToReg, halt;
 
 output [15:0] EX_PC_plus_two;
 output [15:0] EX_src_data1, EX_src_data2;
@@ -46,14 +46,14 @@ output [3:0] EX_ALU_OP;
 output [3:0] EX_Rs, EX_Rt;
 output [3:0] EX_dstReg;
 output [2:0] EX_cc;
-output EX_IMM, EX_FlagWrite, EX_BRANCH, EX_BR, EX_RegWrite, EX_MemWrite, EX_MemRead, EX_MemToReg;
+output EX_IMM, EX_FlagWrite, EX_BRANCH, EX_BR, EX_RegWrite, EX_MemWrite, EX_MemRead, EX_MemToReg, EX_halt;
 
 // Internal signals
 wire [15:0] inst_out;
 wire [15:0] misc_in, misc_out;
 
 // Assign misc signals
-assign misc_in = {3'h0, MemToReg, ALU_OP[3:0], IMM, cc, FlagWrite, BRANCH, BR, RegWrite, MemWrite, MemRead};
+assign misc_in = {halt, MemToReg, ALU_OP[3:0], IMM, cc, FlagWrite, BRANCH, BR, RegWrite, MemWrite, MemRead};
 
 assign EX_MemRead = misc_out[0];
 assign EX_MemWrite = misc_out[1];
@@ -61,10 +61,11 @@ assign EX_RegWrite = misc_out[2];
 assign EX_BR = misc_out[3];
 assign EX_BRANCH = misc_out[4];
 assign EX_FlagWrite = misc_out[5];
-assign EX_cc = misc_out[6];
-assign EX_IMM = misc_out[7];
-assign EX_ALU_OP[3:0] = misc_out[11:8];
-assign EX_MemToReg = misc_out[12];
+assign EX_cc = misc_out[8:6];
+assign EX_IMM = misc_out[9];
+assign EX_ALU_OP[3:0] = misc_out[13:10];
+assign EX_MemToReg = misc_out[14];
+assign EX_halt = misc_out[15];
 
 // Assign address-based outputs
 assign EX_dstReg[3:0] = inst_out[11:8];
@@ -86,31 +87,32 @@ endmodule
 
 module EX_MEM_reg(clk, rst, write, ALU_result, EX_PC_plus_two, data_write, EX_dstReg, EX_RegWrite,
 		EX_MemWrite, EX_MemRead, EX_MemToReg, MEM_ALU_result, MEM_PC_plus_two, MEM_data_write, MEM_Rd,
-		MEM_RegWrite, MEM_MemWrite, MEM_MemRead, MEM_MemToReg);
+		MEM_RegWrite, MEM_MemWrite, MEM_MemRead, MEM_MemToReg, EX_halt, MEM_halt);
 // ADD MemToReg
 input clk, rst, write;
 input [15:0] ALU_result;
 input [15:0] EX_PC_plus_two;
 input [15:0] data_write;
 input [3:0] EX_dstReg;
-input EX_RegWrite, EX_MemWrite, EX_MemRead, EX_MemToReg;
+input EX_RegWrite, EX_MemWrite, EX_MemRead, EX_MemToReg, EX_halt;
 
 output [15:0] MEM_ALU_result;
 output [15:0] MEM_PC_plus_two;
 output [15:0] MEM_data_write;
 output [3:0] MEM_Rd;
-output MEM_RegWrite, MEM_MemWrite, MEM_MemRead, MEM_MemToReg;
+output MEM_RegWrite, MEM_MemWrite, MEM_MemRead, MEM_MemToReg, MEM_halt;
 
 // Internal signals
 wire[15:0] misc_in, misc_out;
 
-assign misc_in = {7'h00, EX_MemToReg, EX_dstReg[3:0], 1'h0, EX_RegWrite, EX_MemWrite, EX_MemRead};
+assign misc_in = {6'h00, EX_halt, EX_MemToReg, EX_dstReg[3:0], 1'h0, EX_RegWrite, EX_MemWrite, EX_MemRead};
 
 assign MEM_MemRead = misc_out[0];
 assign MEM_MemWrite = misc_out[1];
 assign MEM_RegWrite = misc_out[2];
 assign MEM_Rd = misc_out[7:4];
 assign MEM_MemToReg = misc_out[8];
+assign MEM_halt = misc_out[9];
 
 // Instantiate registers for pipelining signals
 register_16bit ALU_Reg(.clk(clk), .rst(rst), .D(ALU_result), .WriteReg(write), .Q(MEM_ALU_result));
@@ -122,29 +124,31 @@ endmodule
 //////////////////////////////////////////////////////////////////////////////////////////////
 
 module MEM_WB_reg(clk, rst, write, MEM_ALU_result, data_out, MEM_PC_plus_two, MEM_Rd, MEM_RegWrite, 
-		WB_ALU_result, WB_data_out, WB_PC_plus_two, WB_Rd, WB_RegWrite, MEM_MemToReg, WB_MemToReg);
+		WB_ALU_result, WB_data_out, WB_PC_plus_two, WB_Rd, WB_RegWrite, MEM_MemToReg, WB_MemToReg,
+		MEM_halt, WB_halt);
 
 input clk, rst, write;
 input [15:0] MEM_ALU_result;
 input [15:0] data_out;
 input [15:0] MEM_PC_plus_two;
 input [3:0] MEM_Rd;
-input MEM_RegWrite, MEM_MemToReg;
+input MEM_RegWrite, MEM_MemToReg, MEM_halt;
 
 output [15:0] WB_ALU_result;
 output [15:0] WB_data_out;
 output [15:0] WB_PC_plus_two;
 output [3:0] WB_Rd;
-output WB_RegWrite, WB_MemToReg;
+output WB_RegWrite, WB_MemToReg, WB_halt;
 
 // Internal signals
 wire [15:0] misc_in, misc_out;
 
-assign misc_in = {10'h000,MEM_MemToReg,MEM_Rd,MEM_RegWrite};
+assign misc_in = {9'h000, MEM_halt,MEM_MemToReg,MEM_Rd,MEM_RegWrite};
 
 assign WB_RegWrite = misc_out[0];
 assign WB_Rd = misc_out[4:1];
 assign WB_MemToReg = misc_out[5];
+assign WB_halt = misc_out[6];
 
 // Instantiate registers for pipelining signals
 register_16bit ALU_Reg(.clk(clk), .rst(rst), .D(MEM_ALU_result), .WriteReg(write), .Q(WB_ALU_result));

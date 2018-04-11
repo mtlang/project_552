@@ -152,15 +152,15 @@ r1
 !s85 0
 31
 !i10b 1
-!s100 U3SLU>j<8Q?9el0@D7o2M3
-I^OHSV7OIBQi0laOVeYCMA0
+!s100 LI]A7AR]JeI=3m5VG]3nC1
+ISBhR?Wl<0QS?>1Tz^?a6O2
 R1
-w1523480294
+w1523482142
 8I:/GitHub/project_552/Stage 2/cpu.v
 FI:/GitHub/project_552/Stage 2/cpu.v
 L0 1
 R3
-!s108 1523480302.203000
+!s108 1523482200.088000
 !s107 I:/GitHub/project_552/Stage 2/cpu.v|
 !s90 -reportprogress|300|-work|work|-vopt|-stats=none|I:/GitHub/project_552/Stage 2/cpu.v|
 !i113 0
@@ -171,15 +171,15 @@ r1
 !s85 0
 31
 !i10b 1
-!s100 ;3n`7LP4H0C:`ke_=V8=E2
-IF15`SQd3=D1C9DX;SP6V53
+!s100 Rh79NLNC1oEhT2M5AH<N_3
+I76l8?kV3?U9L0eS<IN`FU0
 R1
-w1523401857
+w1523480538
 8I:/GitHub/project_552/Stage 2/S18_cpu_testbench_phase2.v
 FI:/GitHub/project_552/Stage 2/S18_cpu_testbench_phase2.v
 L0 1
 R3
-!s108 1523401932.058000
+!s108 1523480542.441000
 !s107 I:/GitHub/project_552/Stage 2/S18_cpu_testbench_phase2.v|
 !s90 -reportprogress|300|-work|work|-vopt|-stats=none|I:/GitHub/project_552/Stage 2/S18_cpu_testbench_phase2.v|
 !i113 0
@@ -229,15 +229,15 @@ r1
 !s85 0
 31
 !i10b 1
-!s100 VA<EGV?Yz88aNRCNzCLMM0
-I=@M0]PFbON=z?h^niC8GX3
+!s100 CVhd=QbE;E1k]Q^VQU2M?1
+I8jckV7RUWz`HhJk3:OMVO0
 R1
-Z5 w1523479814
+Z5 w1523482421
 Z6 8I:/GitHub/project_552/Stage 2/PipelineRegisters.v
 Z7 FI:/GitHub/project_552/Stage 2/PipelineRegisters.v
-L0 87
+L0 88
 R3
-Z8 !s108 1523479820.318000
+Z8 !s108 1523482430.480000
 Z9 !s107 I:/GitHub/project_552/Stage 2/PipelineRegisters.v|
 Z10 !s90 -reportprogress|300|-work|work|-vopt|-stats=none|I:/GitHub/project_552/Stage 2/PipelineRegisters.v|
 !i113 0
@@ -315,7 +315,7 @@ w1523402152
 FI:/GitHub/project_552/Stage 2/hazard_detection_unit.v
 L0 1
 R3
-!s108 1523402371.458000
+!s108 1523481817.741000
 !s107 I:/GitHub/project_552/Stage 2/hazard_detection_unit.v|
 !s90 -reportprogress|300|-work|work|-vopt|-stats=none|I:/GitHub/project_552/Stage 2/hazard_detection_unit.v|
 !i113 0
@@ -326,8 +326,8 @@ r1
 !s85 0
 31
 !i10b 1
-!s100 5j6DkUA3XTD9h@0hngUl=1
-IHA8II7MIZ0Rb1V[DOWMji2
+!s100 dXK6S;3REU88:h4[eff863
+IBzYW2lC]]DoLSoWCSzN^C3
 R1
 R5
 R6
@@ -405,13 +405,13 @@ r1
 !s85 0
 31
 !i10b 1
-!s100 O0QaP6?neWHjojEJ?hhH<0
-Ibj_JCIl24fWoB=1WJnFV13
+!s100 D=2o`=2GKGJQjXnX^G;_N2
+IXgB4X60QgA4S5EE=O31<72
 R1
 R5
 R6
 R7
-L0 124
+L0 126
 R3
 R8
 R9
