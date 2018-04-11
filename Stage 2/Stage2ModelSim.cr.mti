@@ -71,6 +71,19 @@ Model Technology ModelSim SE vlog 10.3c Compiler 2014.07 Jul 19 2014
 Top level modules:
 	Register
 
+} {} {}} {I:/GitHub/project_552/Stage 2/PipelineRegisters.v} {1 {vlog -work work -vopt -stats=none {I:/GitHub/project_552/Stage 2/PipelineRegisters.v}
+Model Technology ModelSim SE vlog 10.3c Compiler 2014.07 Jul 19 2014
+-- Compiling module IF_ID_reg
+-- Compiling module ID_EX_reg
+-- Compiling module EX_MEM_reg
+-- Compiling module MEM_WB_reg
+
+Top level modules:
+	IF_ID_reg
+	ID_EX_reg
+	EX_MEM_reg
+	MEM_WB_reg
+
 } {} {}} {I:/GitHub/project_552/Stage 2/Flag_Reg.v} {1 {vlog -work work -vopt -stats=none {I:/GitHub/project_552/Stage 2/Flag_Reg.v}
 Model Technology ModelSim SE vlog 10.3c Compiler 2014.07 Jul 19 2014
 -- Compiling module Flag_Reg

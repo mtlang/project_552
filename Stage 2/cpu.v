@@ -230,9 +230,11 @@ assign data_write_reg = (WB_PCS) ? WB_PC_plus_two : data_out_final;	// Mux for w
 // Inputs to Data Memory
 assign data_write = (EX_MemWrite) ? EX_src_data1 : EX_src_data2;
 
+wire [15:0] alu_int_temp;
+
 // Inputs to ALU
-assign ALU_in1_int = (EX_IMM) ? EX_extended_immediate : EX_src_data1;	// Mux for non-forwarded alu in1
-mux_3_1 ALU_in1_mux(.out(ALU_in1), .sel(ALU_in1_sel), .in1(ALU_in1_int),
+assign ALU_in1 = (EX_IMM) ? EX_extended_immediate : alu_int_temp;	// Mux for non-forwarded alu in1
+mux_3_1 ALU_in1_mux(.out(alu_int_temp), .sel(ALU_in1_sel), .in1(EX_src_data1),
 		.in2(data_out_final), .in3(MEM_ALU_result)); 					// Mux for ALU in1
 		
 mux_3_1 ALU_in2_mux(.out(ALU_in2), .sel(ALU_in2_sel), .in1(EX_src_data2),
