@@ -64,6 +64,7 @@ wire [2:0] ALU_flags;			// Flag values of ALU operation
 wire [15:0] ALU_in1;			// First input to ALU
 wire [15:0] ALU_in2;			// Second input to ALU
 wire [15:0] ALU_result;			// Result of ALU operation
+wire [15:0] ALU_in1_int;		// Intermediate result for ALU in1
 
 // Pipeline Signals
 // ID
@@ -144,8 +145,9 @@ ALU_16bit ALU(.ALU_OP(EX_ALU_OP), .SrcData1(ALU_in1), .SrcData2(ALU_in2), .Flags
 PC_Reg PC(.clk(clk), .rst(rst), .D(PC_final), .WriteReg(~Stall), .Q(PC_in));
 
 // Hazard Detection Unit
-hazard_detection_unit HDU(.HLT(hlt), .Branch(EX_BRANCH), .ID_instruction(ID_instruction[7:0]), .EX_BR(EX_BR), .EX_dstreg(EX_dstreg), 
-						.EX_MemRead(EX_MemRead), .Stall(Stall), .Flush(Flush));
+hazard_detection_unit HDU(.HLT(hlt), .Branch(EX_BRANCH), .ID_instruction(ID_instruction[7:0]), 
+						.EX_BR(EX_BR), .EX_dstreg(EX_dstReg), .EX_MemRead(EX_MemRead), 
+						.Stall(Stall), .Flush(Flush));
 
 // Data Forwarding Unit
 forwarding FWD(.ALU_in1_sel(ALU_in1_sel), .ALU_in2_sel(ALU_in2_sel), .EX_Rs(EX_Rs), .EX_Rt(EX_Rt), .MEM_Rd(MEM_Rd), .WB_Rd(WB_Rd));
