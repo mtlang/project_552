@@ -153,8 +153,8 @@ ALU_16bit ALU(.ALU_OP(EX_ALU_OP), .SrcData1(ALU_in1), .SrcData2(ALU_in2), .Flags
 PC_Reg PC(.clk(clk), .rst(rst), .D(PC_final), .WriteReg(~Stall), .Q(PC_in));
 
 // Hazard Detection Unit
-hazard_detection_unit HDU(.HLT(halt), .Branch(EX_BRANCH), .ID_instruction(ID_instruction[7:0]), 
-						.EX_BR(EX_BR), .EX_dstreg(EX_dstReg), .EX_MemRead(EX_MemRead), 
+hazard_detection_unit HDU(.HLT(halt), .Branch(EX_BRANCH & pc_branch), .ID_instruction(ID_instruction[7:0]), 
+						.EX_BR(EX_BR & pc_branch), .EX_dstreg(EX_dstReg), .EX_MemRead(EX_MemRead), 
 						.Stall(Stall), .Flush(Flush));
 
 // Data Forwarding Unit
@@ -210,7 +210,7 @@ assign I_shift = {immediate[7:0], 1'b0};
 addsub_16bit adder1(.Sum(PC_plus_two), .Ovfl(), .A(PC_in), .B(16'h0002), .sub(1'b0));	// PC+2 adder
 addsub_16bit adder2(.Sum(PC_branchi), .Ovfl(), .A(ID_PC_plus_two), .B({7'h0, I_shift}), .sub(1'b0));	// PC+2+immediate adder
 
-assign PC_next = (EX_BRANCH & pc_branch) ? PC_branchi : PC_plus_two;
+assign PC_next = (EX_BRANCH & pc_branch) ? EX_PC_branchi : PC_plus_two;
 	
 /////////////////////////
 // Combinational Logic //
