@@ -70,7 +70,9 @@ Address = 16'h1913;
 Address = 16'h1812;
 Write_Enable = 0;
 #40;
-Address = 16'h0013;
+Address = 16'h0113; //This should result in tag mismatch aka miss
+#40;
+Address = 16'h0001;
 #40;
 
 $stop();
