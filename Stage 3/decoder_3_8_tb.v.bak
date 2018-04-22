@@ -1,0 +1,19 @@
+module decoder_3_8_tb ();
+reg [2:0] a;
+wire [7:0] result;
+integer i;
+
+decoder_3_8 DUT (.A(a), .B(result));
+
+initial begin
+#10
+	for (i=0; i<8; i=i+1) begin
+		a = i;
+		#10
+	end
+#10
+$stop;
+end
+
+
+endmodule
