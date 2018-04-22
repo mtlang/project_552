@@ -15,25 +15,26 @@ output [15:0] Data_Out;
 
 wire [2:0] word;
 wire [7:0] tag_mda, tag, blk_index, word_en;
+wire [15:0] cache_data;
 wire [127:0] block_en;
 
-//7:128 decoder gives block_en a one hot vector
-//input is block index
-Decoder_7_128 dec_7_128(.tag(blk_index), .block(block_en));
 
+//Decoder modules for one hot block enable and word enable
+Decoder_7_128 dec_7_128(.tag(blk_index), .block(block_en));
 decoder_3_8 dec_3_8(.A(word), .B(word_en));
 
+//Meta data array (Valid + tag bits)
 MetaDataArray MDA (.clk(clk), .rst(rst), .DataIn(tag), .Write(Write_Enable), .BlockEnable(block_en), .DataOut(tag_mda));
 
-DataArray DA (.clk(clk), .rst(rst), .DataIn(Data_In), .Write(Write_Enable), .BlockEnable(block_en), .WordEnable(word_en), .DataOut(Data_Out));	
+//Data array (cache lines)
+DataArray DA (.clk(clk), .rst(rst), .DataIn(Data_In), .Write(Write_Enable), .BlockEnable(block_en), .WordEnable(word_en), .DataOut(cache_data));	
 
-//computed tag value based on address
-//first bit is valid bit
+//first bit is valid bit in tag
 assign tag = {1'b1,Address[14:8]};
-
-//computed block index based on address
 assign blk_index = Address[7:0];
+assign word = Address[2:0];
 
-assign Miss = (~Write_Enable) ? (tag == tag_mda) : 1'b0;
+assign Miss = (~Write_Enable) ? (tag & tag_mda) : 1'b0;
+assign Data_Out = (Write_Enable) ? 16'hxxxx : cache_data;
 
 endmodule
