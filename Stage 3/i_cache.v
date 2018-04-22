@@ -34,7 +34,7 @@ assign tag = {1'b1,Address[14:8]};
 assign blk_index = Address[7:0];
 assign word = Address[2:0];
 
-assign Miss = (~Write_Enable) ? (tag & tag_mda) : 1'b0;
+assign Miss = (!Write_Enable) ? (tag == tag_mda) : 1'b0;
 assign Data_Out = (Write_Enable) ? 16'hxxxx : cache_data;
 
 endmodule
