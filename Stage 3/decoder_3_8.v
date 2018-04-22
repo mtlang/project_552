@@ -5,7 +5,7 @@ output reg [7:0] B;
 always @ (*)
 	case (A)
 	
-		3'b000 : assign B = 8'h00;
+		3'b000 : assign B = 8'h01;
 		3'b001 : assign B = 8'h02;
 		3'b010 : assign B = 8'h04;
 		3'b011 : assign B = 8'h08;
