@@ -30,3 +30,10 @@ Stage 2/work/_lib1_1.qtl
 *.qtl
 *.qdb
 Stage 2/Stage2ModelSim.cr.mti
+Stage 3/work/_vmake
+Stage 3/work/_info
+Stage 2/verilogsim.plog
+Stage 2/verilogsim.ptrace
+Stage 2/work/_vmake
+*.ptrace
+*.plog
