@@ -37,3 +37,8 @@ Stage 2/verilogsim.ptrace
 Stage 2/work/_vmake
 *.ptrace
 *.plog
+Stage 3/work/_lock
+Stage 3/work/_vmake
+Stage 3/work/_info
+Stage 3/work/_vmake
+Stage 3/work/_info
