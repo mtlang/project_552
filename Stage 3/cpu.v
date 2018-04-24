@@ -26,6 +26,7 @@ wire SHIFT;						// Control signal for if instruction is a shift/rotate
 wire Stall;						// Control signal for stalling the pipeline
 wire Flush;						// Control signal for flushing data from IF/ID stage
 wire [3:0] ALU_OP;				// Control signal for ALU Operation to be performed
+wire halt;
 
 // Instruction Memory Signals
 wire [2:0] cc;					// Condition codes for branch instructions
@@ -66,8 +67,7 @@ wire [15:0] ALU_in2;			// Second input to ALU
 wire [15:0] ALU_result;			// Result of ALU operation
 wire [15:0] ALU_in1_int;		// Intermediate result for ALU in1
 
-wire halt;
-
+////////////////////
 // Pipeline Signals
 // ID
 wire ID_BR;
@@ -120,15 +120,41 @@ wire [15:0] WB_instruction;
 wire [15:0] WB_data_out;
 wire [15:0] WB_ALU_result;
 
+////////////////////
+// Cache Signals
+wire fsm_stall;					// Indicates when to stall due to a cache miss
+wire fsm_busy;					// Indicates a read from main memory is occuring
+wire fsm_write_data;			// Signal to write data to cache
+wire fsm_write_tag;				// Signal to write tag bits in cache
+wire miss_detected;				// Indicates when a miss was detected by either cache
+wire memory_data_valid;			// Indicates if the data read from memory is valid or not
+wire mem_en;					// ?
+wire I_miss;
+wire D_miss;
+wire I_write;
+wire D_write;
+
+wire [15:0] mem_addr;			// Address that main memory reads from
+wire [15:0] miss_address;		// Address that resulted in a cache miss
+wire [15:0] memory_data;		// Data that comes from main memory
+wire [15:0] D_new_block;
+wire [15:0] I_new_block;
+wire [15:0] mem_data_in;
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 //////////////////////////////////
 // Instantiate required modules //
 //////////////////////////////////
 
 // Writes to Data Memory
+// TODO Remove this
 memory1cData DataMem(.data_out(data_out), .data_in(MEM_data_write), .addr(MEM_ALU_result), 
 			.enable(MEM_MemWrite | MEM_MemRead), .wr(MEM_MemWrite), .clk(clk), .rst(rst));
 
 // Reads from Instruction Memory
+// TODO Remove this
 memory1c InstMem(.data_out(instruction), .data_in(16'hxxxx), .addr(PC_in), .enable(rst_n), 
 			.wr(1'b0), .clk(clk), .rst(rst));
 
@@ -163,11 +189,10 @@ forwarding FWD(.ALU_in1_sel(ALU_in1_sel), .ALU_in2_sel(ALU_in2_sel), .EX_Rs(EX_R
 ////////////////////////
 // Pipeline Registers //
 ////////////////////////
-// might need to prop the stall as write enables
-IF_ID_reg ifid(.clk(clk), .rst(rst), .write(~Stall), .PC_plus_two(PC_plus_two), .instruction(instruction), 
+IF_ID_reg ifid(.clk(clk), .rst(rst), .write(~Stall | ~fsm_stall), .PC_plus_two(PC_plus_two), .instruction(instruction), 
 				.flush(Flush), .ID_PC_plus_two(ID_PC_plus_two), .ID_instruction(ID_instruction));
 				
-ID_EX_reg idex(.clk(clk), .rst(rst), .write(1'b1), .ID_PC_plus_two(ID_PC_plus_two), .ID_instruction(ID_instruction), 
+ID_EX_reg idex(.clk(clk), .rst(rst), .write(~fsm_stall), .ID_PC_plus_two(ID_PC_plus_two), .ID_instruction(ID_instruction), 
 				.src_data1(src_data1), .src_data2(src_data2), .extended_immediate(extended_immediate), 
 				.PC_branchi(PC_branchi), .ALU_OP(ALU_OP), .IMM(IMM), .cc(cc), .FlagWrite(FlagWrite),
 				.BRANCH(BRANCH), .BR(BR), .RegWrite(RegWrite), .MemWrite(MemWrite), .MemRead(MemRead), 
@@ -179,7 +204,7 @@ ID_EX_reg idex(.clk(clk), .rst(rst), .write(1'b1), .ID_PC_plus_two(ID_PC_plus_tw
 				.EX_MemWrite(EX_MemWrite), .EX_MemRead(EX_MemRead), .EX_MemToReg(EX_MemToReg),
 				.EX_halt(EX_halt), .halt(halt), .SHIFT(SHIFT), .EX_SHIFT(), .EX_PCS(EX_PCS), .PCS(PCS));
 
-EX_MEM_reg exmem(.clk(clk), .rst(rst), .write(1'b1), .ALU_result(ALU_result), .EX_PC_plus_two(EX_PC_plus_two), 
+EX_MEM_reg exmem(.clk(clk), .rst(rst), .write(~fsm_stall), .ALU_result(ALU_result), .EX_PC_plus_two(EX_PC_plus_two), 
 				.data_write(data_write), .EX_dstReg(EX_dstReg), .EX_RegWrite(EX_RegWrite), 
 				.EX_MemWrite(EX_MemWrite), .EX_MemRead(EX_MemRead), .MEM_ALU_result(MEM_ALU_result), 
 				.MEM_PC_plus_two(MEM_PC_plus_two), .MEM_data_write(MEM_data_write), .MEM_Rd(MEM_Rd), 
@@ -187,11 +212,36 @@ EX_MEM_reg exmem(.clk(clk), .rst(rst), .write(1'b1), .ALU_result(ALU_result), .E
 				.EX_MemToReg(EX_MemToReg), .MEM_MemToReg(MEM_MemToReg), .EX_halt(EX_halt), 
 				.MEM_halt(MEM_halt), .EX_PCS(EX_PCS), .MEM_PCS(MEM_PCS));
 
-MEM_WB_reg memwb(.clk(clk), .rst(rst), .write(1'b1), .MEM_ALU_result(MEM_ALU_result), .data_out(data_out), 
+MEM_WB_reg memwb(.clk(clk), .rst(rst), .write(~fsm_stall), .MEM_ALU_result(MEM_ALU_result), .data_out(data_out), 
 				.MEM_PC_plus_two(MEM_PC_plus_two), .MEM_Rd(MEM_Rd), .MEM_RegWrite(MEM_RegWrite), 
 				.WB_ALU_result(WB_ALU_result), .WB_data_out(WB_data_out), .WB_PC_plus_two(WB_PC_plus_two), 
 				.WB_Rd(WB_Rd), .WB_RegWrite(WB_RegWrite),.MEM_MemToReg(MEM_MemToReg), .WB_MemToReg(WB_MemToReg),
 				.WB_halt(WB_halt), .MEM_halt(MEM_halt), .MEM_PCS(MEM_PCS), .WB_PCS(WB_PCS));
+
+///////////////////
+// Cache Modules //
+///////////////////
+cache_fill_FSM cache_fsm(.clk(clk), .rst(rst), .miss_detected(miss_detected), 
+					.miss_address(miss_address), .fsm_busy(fsm_busy), .write_data_array(fsm_write_data), 
+					.write_tag_array(fsm_write_tag), .memory_address(mem_addr),
+					.memory_data(memory_data), .memory_data_valid(memory_data_valid));
+
+mem_cache_interface cache_interface(.fsm_busy(fsm_busy), .write_data_array(fsm_write_data), 
+					.write_tag_array(fsm_write_tag), .data_cache_write(MEM_MemWrite), .D_miss(D_miss), 
+					.I_miss(I_miss), .D_addr(MEM_ALU_result), .D_data(MEM_data_write), 
+					.memory_data(memory_data), .I_addr(PC_in), .miss_detected(miss_detected),
+					.mem_en(mem_en), .mem_write(mem_write), .D_write(D_write), .I_write(I_write),
+					.miss_address(miss_address), .mem_data_in(mem_data_in), .D_new_block(D_new_block),
+					.I_new_block(I_new_block));
+
+memory4c main_memory(.data_out(memory_data), .data_in(mem_data_in), .addr(mem_addr), .enable(mem_en), 
+					.wr(mem_write), .clk(clk), .rst(rst), .data_valid(memory_data_valid));
+					
+cache D_Cache(.clk(clk), .rst(rst), .Address(MEM_ALU_result), .Data_In(D_new_block), 
+				.Data_Out(data_out), .Write_Enable(D_write), .Miss(D_miss));
+
+cache I_Cache(.clk(clk), .rst(rst), .Address(PC_in), .Data_In(I_new_block), 
+				.Data_Out(instruction), .Write_Enable(I_write), .Miss(I_miss));
 
 ////////////////
 // PC Control //
@@ -248,6 +298,9 @@ assign PC_final = (rst) ? 16'h0000 :		// RESET
 assign pc = PC_in;	// current value of PC during a given cycle
 
 assign hlt = WB_halt;
+
+// Cache combinational logic
+assign fsm_stall = fsm_busy;
 
 endmodule
 
