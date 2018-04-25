@@ -1,9 +1,10 @@
 module mem_cache_interface(fsm_busy, write_data_array, write_tag_array, data_cache_write, D_miss, I_miss,
 							D_addr, D_data, memory_data, I_addr, miss_detected, mem_en, mem_write, D_write,
-							I_write, miss_address, mem_data_in, D_new_block, I_new_block);
+							I_write, miss_address, mem_data_in, D_new_block, I_new_block, clk, rst);
 
 // Correct the comments if they are wrong Marshall
 
+input clk, rst;
 input fsm_busy;				// busy signal from cache fsm
 input write_data_array;		// fsm_write_data
 input write_tag_array;		// fsm_write_tag
@@ -26,11 +27,29 @@ output [15:0] D_new_block;	// Data to write to D-cache
 output [15:0] I_new_block;	// Data to write to I-cache
 
 // Internal signals
+wire D_request;
+wire I_request;
 
+// Flop I and D cache miss requests
+dff I_reg(.clk(clk), .rst(rst), .q(I_request), .d(I_miss), .wen());	// ?
+dff D_reg(.clk(clk), .rst(rst), .q(D_request), .d(D_miss), .wen());
 
 // Two registers for D_request and I_request. They are set when their respective cache sends a miss signal.
 // They reset when the fill fsm is no longer busy.
 // If both asserted at once, I_request takes priority
+
+assign miss_detected = D_miss | I_miss;
+assign miss_address = (I_request) ? I_addr : D_addr;
+
+assign mem_en = data_cache_write | D_miss | I_miss;
+assign mem_data_in = (data_cache_write & D_request & ~I_request) ? D_data : 16'hxxxx;
+assign mem_write = (data_cache_write & D_request & ~I_request);
+
+assign D_write = (D_miss & ~I_miss & write_data_array & write_tag_array) | data_cache_write;
+assign D_new_block = (data_cache_write) ? D_data : memory_data;
+
+assign I_write = (I_miss & write_data_array & write_tag_array);
+assign I_new_block = memory_data;
 
 
 endmodule

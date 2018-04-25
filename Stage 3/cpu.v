@@ -150,13 +150,13 @@ wire [15:0] mem_data_in;
 
 // Writes to Data Memory
 // TODO Remove this
-memory1cData DataMem(.data_out(data_out), .data_in(MEM_data_write), .addr(MEM_ALU_result), 
-			.enable(MEM_MemWrite | MEM_MemRead), .wr(MEM_MemWrite), .clk(clk), .rst(rst));
+//memory1cData DataMem(.data_out(data_out), .data_in(MEM_data_write), .addr(MEM_ALU_result), 
+//			.enable(MEM_MemWrite | MEM_MemRead), .wr(MEM_MemWrite), .clk(clk), .rst(rst));
 
 // Reads from Instruction Memory
 // TODO Remove this
-memory1c InstMem(.data_out(instruction), .data_in(16'hxxxx), .addr(PC_in), .enable(rst_n), 
-			.wr(1'b0), .clk(clk), .rst(rst));
+//memory1c InstMem(.data_out(instruction), .data_in(16'hxxxx), .addr(PC_in), .enable(rst_n), 
+//			.wr(1'b0), .clk(clk), .rst(rst));
 
 // Register File
 RegisterFile Regs(.clk(clk), .rst(rst), .SrcReg1(srcReg1), .SrcReg2(srcReg2), .DstReg(dstReg), 
@@ -232,7 +232,7 @@ mem_cache_interface cache_interface(.fsm_busy(fsm_busy), .write_data_array(fsm_w
 					.memory_data(memory_data), .I_addr(PC_in), .miss_detected(miss_detected),
 					.mem_en(mem_en), .mem_write(mem_write), .D_write(D_write), .I_write(I_write),
 					.miss_address(miss_address), .mem_data_in(mem_data_in), .D_new_block(D_new_block),
-					.I_new_block(I_new_block));
+					.I_new_block(I_new_block), .clk(clk), .rst(rst));
 
 memory4c main_memory(.data_out(memory_data), .data_in(mem_data_in), .addr(mem_addr), .enable(mem_en), 
 					.wr(mem_write), .clk(clk), .rst(rst), .data_valid(memory_data_valid));
