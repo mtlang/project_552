@@ -21,6 +21,8 @@ output mem_en;				// High when writing to mem or a cache miss
 output mem_write;			// Write enable for memory
 output D_write;				// Write enable for D-cache
 output I_write;				// Write-enable for I-cache
+output D_stall;
+output I_stall;
 output [15:0] miss_address;	// Address that missed
 output [15:0] mem_data_in;	// Data to write to memory
 output [15:0] D_new_block;	// Data to write to D-cache
@@ -56,5 +58,7 @@ assign D_new_block = (data_cache_write) ? D_data : memory_data;
 assign I_write = (I_miss & write_data_array & write_tag_array);
 assign I_new_block = memory_data;
 
+assign D_stall = fsm_busy & D_request & ~I_request;
+assign I_stall = fsm_busy & I_request;
 
 endmodule
