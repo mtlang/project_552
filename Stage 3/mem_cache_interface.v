@@ -1,8 +1,7 @@
 module mem_cache_interface(fsm_busy, write_data_array, write_tag_array, data_cache_write, D_miss, I_miss,
-							D_addr, D_data, memory_data, I_addr, miss_detected, mem_en, mem_write, D_write,
-							I_write, miss_address, mem_data_in, D_new_block, I_new_block, clk, rst);
-
-// Correct the comments if they are wrong Marshall
+							D_addr, D_data, memory_data, I_addr, miss_detected, mem_en, mem_write, D_write_tag,
+							D_write_data, I_write_tag, I_write_data, miss_address, mem_data_in, D_new_block,
+							I_new_block, clk, rst, I_stall, D_stall);
 
 input clk, rst;
 input fsm_busy;				// busy signal from cache fsm
@@ -19,8 +18,10 @@ input [15:0] I_addr;		// Current PC value to read instruction
 output miss_detected;		// Indicates a D-cache or I-cache miss
 output mem_en;				// High when writing to mem or a cache miss
 output mem_write;			// Write enable for memory
-output D_write;				// Write enable for D-cache
-output I_write;				// Write-enable for I-cache
+output D_write_data, D_write_tag;				// Write enable for D-cache
+output I_write_data, I_write_tag;				// Write-enable for I-cache
+output D_stall;
+output I_stall;
 output [15:0] miss_address;	// Address that missed
 output [15:0] mem_data_in;	// Data to write to memory
 output [15:0] D_new_block;	// Data to write to D-cache
@@ -50,11 +51,15 @@ assign mem_en = data_cache_write | D_miss | I_miss;
 assign mem_data_in = (data_cache_write & D_request & ~I_request) ? D_data : 16'hxxxx;
 assign mem_write = (data_cache_write & D_request & ~I_request);
 
-assign D_write = (D_miss & ~I_miss & write_data_array & write_tag_array) | data_cache_write;
+assign D_write_tag = (D_miss & ~I_miss  & write_tag_array) | data_cache_write;
+assign D_write_data = (D_miss & ~I_miss & write_data_array) | data_cache_write;
 assign D_new_block = (data_cache_write) ? D_data : memory_data;
 
-assign I_write = (I_miss & write_data_array & write_tag_array);
+assign I_write_tag = (I_miss & write_tag_array);
+assign I_write_data = (I_miss & write_data_array);
 assign I_new_block = memory_data;
 
+assign D_stall = fsm_busy & D_request & ~I_request;
+assign I_stall = fsm_busy & I_request;
 
 endmodule
