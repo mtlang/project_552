@@ -128,18 +128,23 @@ wire fsm_write_data;			// Signal to write data to cache
 wire fsm_write_tag;				// Signal to write tag bits in cache
 wire miss_detected;				// Indicates when a miss was detected by either cache
 wire memory_data_valid;			// Indicates if the data read from memory is valid or not
-wire mem_en;					// ?
-wire I_miss;
+wire mem_en;					// Enable for memory reads/writes
+wire I_miss;					
 wire D_miss;
-wire I_write;
-wire D_write;
+wire I_write_data;
+wire I_write_tag;
+wire D_write_tag;
+wire D_write_data;
+wire I_stall;
+wire D_stall;
 
+wire [2:0] word_num;
 wire [15:0] mem_addr;			// Address that main memory reads from
 wire [15:0] miss_address;		// Address that resulted in a cache miss
 wire [15:0] memory_data;		// Data that comes from main memory
-wire [15:0] D_new_block;
-wire [15:0] I_new_block;
-wire [15:0] mem_data_in;
+wire [15:0] D_new_block;		// Data to write to the D-cache
+wire [15:0] I_new_block;		// Data to write to the I-cache
+wire [15:0] mem_data_in;		// Data to write to main memory
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -176,7 +181,7 @@ ALU_16bit ALU(.ALU_OP(EX_ALU_OP), .SrcData1(ALU_in1), .SrcData2(ALU_in2), .Flags
 				.Result(ALU_result), .rst(rst));
 
 // PC
-PC_Reg PC(.clk(clk), .rst(rst), .D(PC_final), .WriteReg(~Stall), .Q(PC_in));
+PC_Reg PC(.clk(clk), .rst(rst), .D(PC_final), .WriteReg(~(Stall | D_stall | I_stall)), .Q(PC_in));
 
 // Hazard Detection Unit
 hazard_detection_unit HDU(.HLT(halt), .Branch(EX_BRANCH & pc_branch), .ID_instruction(ID_instruction[7:0]), 
@@ -189,10 +194,10 @@ forwarding FWD(.ALU_in1_sel(ALU_in1_sel), .ALU_in2_sel(ALU_in2_sel), .EX_Rs(EX_R
 ////////////////////////
 // Pipeline Registers //
 ////////////////////////
-IF_ID_reg ifid(.clk(clk), .rst(rst), .write(~Stall | ~fsm_stall), .PC_plus_two(PC_plus_two), .instruction(instruction), 
-				.flush(Flush), .ID_PC_plus_two(ID_PC_plus_two), .ID_instruction(ID_instruction));
+IF_ID_reg ifid(.clk(clk), .rst(rst), .write(~(Stall | D_stall | I_stall)), .PC_plus_two(PC_plus_two), .instruction(instruction), 
+				.flush(Flush | I_stall), .ID_PC_plus_two(ID_PC_plus_two), .ID_instruction(ID_instruction));
 				
-ID_EX_reg idex(.clk(clk), .rst(rst), .write(~fsm_stall), .ID_PC_plus_two(ID_PC_plus_two), .ID_instruction(ID_instruction), 
+ID_EX_reg idex(.clk(clk), .rst(rst), .write(~D_stall), .ID_PC_plus_two(ID_PC_plus_two), .ID_instruction(ID_instruction), 
 				.src_data1(src_data1), .src_data2(src_data2), .extended_immediate(extended_immediate), 
 				.PC_branchi(PC_branchi), .ALU_OP(ALU_OP), .IMM(IMM), .cc(cc), .FlagWrite(FlagWrite),
 				.BRANCH(BRANCH), .BR(BR), .RegWrite(RegWrite), .MemWrite(MemWrite), .MemRead(MemRead), 
@@ -204,7 +209,7 @@ ID_EX_reg idex(.clk(clk), .rst(rst), .write(~fsm_stall), .ID_PC_plus_two(ID_PC_p
 				.EX_MemWrite(EX_MemWrite), .EX_MemRead(EX_MemRead), .EX_MemToReg(EX_MemToReg),
 				.EX_halt(EX_halt), .halt(halt), .SHIFT(SHIFT), .EX_SHIFT(), .EX_PCS(EX_PCS), .PCS(PCS));
 
-EX_MEM_reg exmem(.clk(clk), .rst(rst), .write(~fsm_stall), .ALU_result(ALU_result), .EX_PC_plus_two(EX_PC_plus_two), 
+EX_MEM_reg exmem(.clk(clk), .rst(rst), .write(~D_stall), .ALU_result(ALU_result), .EX_PC_plus_two(EX_PC_plus_two), 
 				.data_write(data_write), .EX_dstReg(EX_dstReg), .EX_RegWrite(EX_RegWrite), 
 				.EX_MemWrite(EX_MemWrite), .EX_MemRead(EX_MemRead), .MEM_ALU_result(MEM_ALU_result), 
 				.MEM_PC_plus_two(MEM_PC_plus_two), .MEM_data_write(MEM_data_write), .MEM_Rd(MEM_Rd), 
@@ -212,7 +217,7 @@ EX_MEM_reg exmem(.clk(clk), .rst(rst), .write(~fsm_stall), .ALU_result(ALU_resul
 				.EX_MemToReg(EX_MemToReg), .MEM_MemToReg(MEM_MemToReg), .EX_halt(EX_halt), 
 				.MEM_halt(MEM_halt), .EX_PCS(EX_PCS), .MEM_PCS(MEM_PCS));
 
-MEM_WB_reg memwb(.clk(clk), .rst(rst), .write(~fsm_stall), .MEM_ALU_result(MEM_ALU_result), .data_out(data_out), 
+MEM_WB_reg memwb(.clk(clk), .rst(rst), .write(~D_stall), .MEM_ALU_result(MEM_ALU_result), .data_out(data_out), 
 				.MEM_PC_plus_two(MEM_PC_plus_two), .MEM_Rd(MEM_Rd), .MEM_RegWrite(MEM_RegWrite), 
 				.WB_ALU_result(WB_ALU_result), .WB_data_out(WB_data_out), .WB_PC_plus_two(WB_PC_plus_two), 
 				.WB_Rd(WB_Rd), .WB_RegWrite(WB_RegWrite),.MEM_MemToReg(MEM_MemToReg), .WB_MemToReg(WB_MemToReg),
@@ -224,24 +229,28 @@ MEM_WB_reg memwb(.clk(clk), .rst(rst), .write(~fsm_stall), .MEM_ALU_result(MEM_A
 cache_fill_FSM cache_fsm(.clk(clk), .rst(rst), .miss_detected(miss_detected), 
 					.miss_address(miss_address), .fsm_busy(fsm_busy), .write_data_array(fsm_write_data), 
 					.write_tag_array(fsm_write_tag), .memory_address(mem_addr),
-					.memory_data(memory_data), .memory_data_valid(memory_data_valid));
+					.memory_data(memory_data), .memory_data_valid(memory_data_valid), .word_num(word_num));
 
 mem_cache_interface cache_interface(.fsm_busy(fsm_busy), .write_data_array(fsm_write_data), 
 					.write_tag_array(fsm_write_tag), .data_cache_write(MEM_MemWrite), .D_miss(D_miss), 
 					.I_miss(I_miss), .D_addr(MEM_ALU_result), .D_data(MEM_data_write), 
 					.memory_data(memory_data), .I_addr(PC_in), .miss_detected(miss_detected),
-					.mem_en(mem_en), .mem_write(mem_write), .D_write(D_write), .I_write(I_write),
+					.mem_en(mem_en), .mem_write(mem_write), .D_write_tag(D_write_tag),
 					.miss_address(miss_address), .mem_data_in(mem_data_in), .D_new_block(D_new_block),
-					.I_new_block(I_new_block), .clk(clk), .rst(rst));
+					.I_new_block(I_new_block), .clk(clk), .rst(rst), .D_write_data(D_write_data),
+					.I_write_data(I_write_data), .I_stall(I_stall), .D_stall(D_stall), 
+					.I_write_tag(I_write_tag));
 
 memory4c main_memory(.data_out(memory_data), .data_in(mem_data_in), .addr(mem_addr), .enable(mem_en), 
 					.wr(mem_write), .clk(clk), .rst(rst), .data_valid(memory_data_valid));
 					
 cache D_Cache(.clk(clk), .rst(rst), .Address(MEM_ALU_result), .Data_In(D_new_block), 
-				.Data_Out(data_out), .Write_Enable(D_write), .Miss(D_miss));
+				.Data_Out(data_out), .Write_Data_Array(D_write_data), .Write_Tag_Array(D_write_tag),
+				.Miss(D_miss), .Read_Enable(MEM_MemRead), .Word_Num(word_num));
 
 cache I_Cache(.clk(clk), .rst(rst), .Address(PC_in), .Data_In(I_new_block), 
-				.Data_Out(instruction), .Write_Enable(I_write), .Miss(I_miss));
+				.Data_Out(instruction), .Write_Data_Array(I_write_data), .Write_Tag_Array(I_write_tag), 
+				.Miss(I_miss), .Read_Enable(~I_write_data), .Word_Num(word_num));
 
 ////////////////
 // PC Control //

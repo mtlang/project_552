@@ -20,6 +20,7 @@ output [15:0] Data_Out;
 wire [2:0] word;
 wire [7:0] tag_mda, tag; 
 wire [7:0] word_line_rd, word_line_wrt, word_en;
+wire [7:0] junk;
 wire [6:0] blk_index;
 wire [15:0] cache_data;
 wire [127:0] block_en;
@@ -30,7 +31,7 @@ Decoder_7_128 dec_7_128(.tag(blk_index), .block(block_en));
 decoder_3_8 dec_3_8(.A(word), .B(word_line_rd));
 
 //Shifter for shifting word enable on multi-byte writes
-Shifter shifter(.Shift_Out(word_line_wrt), .Shift_In(8'h01), .Shift_Val({1'b0,Word_Num}), .Mode(2'b00));
+Shifter shifter(.Shift_Out({junk, word_line_wrt}), .Shift_In(16'h0001), .Shift_Val({1'b0,Word_Num}), .Mode(2'b00));
 
 //Meta data array (Valid + tag bits)
 MetaDataArray MDA (.clk(clk), .rst(rst), .DataIn(tag), .Write(Write_Tag_Array), .BlockEnable(block_en), .DataOut(tag_mda));
