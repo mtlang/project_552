@@ -18,7 +18,7 @@ output [15:0] Data_Out;
 
 ////Internal signals////
 wire [2:0] word;
-wire [7:0] tag_mda, tag; 
+wire [7:0] tag_mda, tag, 
 wire [7:0] word_line_rd, word_line_wrt, word_en;
 wire [6:0] blk_index;
 wire [15:0] cache_data;
@@ -41,8 +41,7 @@ DataArray DA (.clk(clk), .rst(rst), .DataIn(Data_In), .Write(Write_Data_Array), 
 
 //first bit is valid bit in tag
 assign tag = {1'b1,Address[14:8]};
-//assign blk_index = Address[6:0];
-assign blk_index = {Address[7:3],1'b0};
+assign blk_index = Address[6:0];
 assign word = Address[2:0];
 
 //word enable assigned the specific word if a read
