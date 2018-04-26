@@ -21,12 +21,14 @@ clk = 0;
 rst = 1;
 miss_detected = 0;
 memory_data_valid = 0;
-miss_address = 16'h0000;
+miss_address = 16'h0046;
 memory_data = 16'h0000;
 
 #10;
 
 rst = 0;
+
+#10;
 
 miss_detected = 1;
 
@@ -36,20 +38,20 @@ miss_detected = 0;
 
 #25;
 
-repeat(10) begin
+
 memory_data_valid = 1;
 memory_data = 16'h4567;
 
 #10;
 
-memory_data_valid = 0;
+
 
 #40;
 
-end
+
 
 #50;
-
+memory_data_valid = 0;
 
 $stop();
 
