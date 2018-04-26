@@ -122,7 +122,6 @@ wire [15:0] WB_ALU_result;
 
 ////////////////////
 // Cache Signals
-wire fsm_stall;					// Indicates when to stall due to a cache miss
 wire fsm_busy;					// Indicates a read from main memory is occuring
 wire fsm_write_data;			// Signal to write data to cache
 wire fsm_write_tag;				// Signal to write tag bits in cache
@@ -301,15 +300,12 @@ mux_3_1 ALU_in2_mux(.out(ALU_in2), .sel(ALU_in2_sel), .in1(EX_src_data2),
 
 // PC Stuff
 assign PC_final = (rst) ? 16'h0000 :		// RESET
-				  (EX_BR & pc_branch) ? EX_src_data1 :		// BR mux	// TODO Need to change this, BR depends on cc's
+				  (EX_BR & pc_branch) ? EX_src_data1 :		// BR mux
 				  PC_next;					// default
 				  
 assign pc = PC_in;	// current value of PC during a given cycle
 
 assign hlt = WB_halt;
-
-// Cache combinational logic
-assign fsm_stall = fsm_busy;
 
 endmodule
 

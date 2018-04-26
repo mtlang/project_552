@@ -27,10 +27,11 @@ addsub_16bit adder1(.Sum(nxt_addr), .Ovfl(), .A(current_addr), .B(add_value), .s
 dff addr[15:0](.clk(clk), .rst(rst), .d(nxt_final[15:0]), .q(current_addr[15:0]), .wen(memory_data_valid | miss_detected));
 
 // FF for state
-dff STATE0(.clk(clk), .rst(rst), .d(nxt_state[0]), .q(state[0]), .wen(1'b1));
-dff STATE1(.clk(clk), .rst(rst), .d(nxt_state[1]), .q(state[1]), .wen(1'b1));
-dff STATE2(.clk(clk), .rst(rst), .d(nxt_state[2]), .q(state[2]), .wen(1'b1));
-dff STATE3(.clk(clk), .rst(rst), .d(nxt_state[3]), .q(state[3]), .wen(1'b1));
+dff STATE[3:0](.clk(clk), .rst(rst), .d(nxt_state[3:0]), .q(state[3:0]), .wen(1'b1));
+//dff STATE0(.clk(clk), .rst(rst), .d(nxt_state[0]), .q(state[0]), .wen(1'b1));
+//dff STATE1(.clk(clk), .rst(rst), .d(nxt_state[1]), .q(state[1]), .wen(1'b1));
+//dff STATE2(.clk(clk), .rst(rst), .d(nxt_state[2]), .q(state[2]), .wen(1'b1));
+//dff STATE3(.clk(clk), .rst(rst), .d(nxt_state[3]), .q(state[3]), .wen(1'b1));
 
 always @* begin
 // Default signals
@@ -48,6 +49,7 @@ case (state)
 		memory_address = (miss_detected) ? miss_address : 16'hxxxx;
 		nxt_final = (miss_detected) ? miss_address : 16'hxxxx;
 		nxt_state = (miss_detected) ? 4'h1 : 4'h0;
+		add_value = 16'h0002;
 	end
 	4'h1: begin		// WAIT1
 		fsm_busy = 1;

@@ -211,7 +211,6 @@ module cpu_ptb();
    assign DCacheHit = ~DUT.D_miss;	// TODO
    // Signal indicating a valid data cache hit
 
-
    /* Add anything else you want here */
 
    
