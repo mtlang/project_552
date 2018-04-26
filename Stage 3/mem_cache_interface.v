@@ -1,6 +1,7 @@
 module mem_cache_interface(fsm_busy, write_data_array, write_tag_array, data_cache_write, D_miss, I_miss,
 							D_addr, D_data, memory_data, I_addr, miss_detected, mem_en, mem_write, D_write,
-							I_write, miss_address, mem_data_in, D_new_block, I_new_block, clk, rst);
+							I_write, miss_address, mem_data_in, D_new_block, I_new_block, clk, rst, I_stall,
+							D_stall);
 
 // Correct the comments if they are wrong Marshall
 
