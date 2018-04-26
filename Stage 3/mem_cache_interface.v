@@ -30,14 +30,19 @@ output [15:0] I_new_block;	// Data to write to I-cache
 wire D_request;
 wire I_request;
 
-// Flop I and D cache miss requests
-dff I_reg(.clk(clk), .rst(rst), .q(I_request), .d(I_miss), .wen());	// ?
-dff D_reg(.clk(clk), .rst(rst), .q(D_request), .d(D_miss), .wen());
+wire D_in, I_in;
 
 // Two registers for D_request and I_request. They are set when their respective cache sends a miss signal.
 // They reset when the fill fsm is no longer busy.
 // If both asserted at once, I_request takes priority
+dff I_reg(.clk(clk), .rst(rst), .q(I_request), .d(D_in), .wen(I_miss | I_request));
+dff D_reg(.clk(clk), .rst(rst), .q(D_request), .d(I_in), .wen(D_miss | D_request));
 
+// Assign register inputs
+assign I_in = (I_request) ? ~fsm_busy : I_miss;
+assign D_in = (D_request) ? (~fsm_busy & ~I_request) : D_miss;
+
+// Assign outputs
 assign miss_detected = D_miss | I_miss;
 assign miss_address = (I_request) ? I_addr : D_addr;
 
