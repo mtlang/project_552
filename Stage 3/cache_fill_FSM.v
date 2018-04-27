@@ -43,7 +43,7 @@ case (state)
 	4'h0: begin		// IDLE
 		fsm_busy = (miss_detected) ? 1 : 0;
 		memory_address = (miss_detected) ? miss_address : 16'hxxxx;
-		nxt_final = (miss_detected) ? miss_address : 16'hxxxx;
+		nxt_final = (miss_detected) ? nxt_addr : 16'hxxxx;
 		nxt_state = (miss_detected) ? 4'h1 : 4'h0;
 		add_value = 16'h0002;
 	end
@@ -53,6 +53,7 @@ case (state)
 		memory_address = current_addr; 
 		write_data_array = (memory_data_valid) ? 1 : 0;
 		add_value = 16'h0002;
+		word_num = 3'h0;
 		nxt_state = (memory_data_valid) ? 4'h2 : 4'h1;
 	end
 	4'h2: begin		// WAIT2
@@ -115,7 +116,6 @@ case (state)
 		nxt_final = nxt_addr;
 		memory_address =  current_addr; 
 		write_tag_array = (memory_data_valid) ? 1 : 0;
-		//add_value = 16'h000e;
 		word_num = 3'h7;
 		nxt_state = (memory_data_valid) ? 4'h0 : 4'h8;	
 		// Don't need to increment address at this point

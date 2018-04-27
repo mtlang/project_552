@@ -1,7 +1,7 @@
 module mem_cache_interface(fsm_busy, write_data_array, write_tag_array, data_cache_write, D_miss, I_miss,
 							D_addr, D_data, memory_data, I_addr, miss_detected, mem_en, mem_write, D_write_tag,
 							D_write_data, I_write_tag, I_write_data, miss_address, mem_data_in, D_new_block,
-							I_new_block, clk, rst, I_stall, D_stall);
+							I_new_block, clk, rst, I_stall, D_stall, Word_Num);
 
 input clk, rst;
 input fsm_busy;				// busy signal from cache fsm
@@ -14,6 +14,7 @@ input [15:0] D_addr;		// MEM_ALU_result
 input [15:0] D_data;		// MEM_data_write
 input [15:0] memory_data;	// data read from memory
 input [15:0] I_addr;		// Current PC value to read instruction
+input [2:0] Word_Num;
 
 output miss_detected;		// Indicates a D-cache or I-cache miss
 output mem_en;				// High when writing to mem or a cache miss
@@ -33,7 +34,7 @@ output [15:0] I_new_block;	// Data to write to I-cache
 assign miss_detected = D_miss | I_miss;
 assign miss_address = (I_miss) ? I_addr : D_addr;
 
-assign mem_en = data_cache_write | D_miss | I_miss;
+assign mem_en = 1'b1;//data_cache_write | D_miss | I_miss;
 assign mem_data_in = (data_cache_write & D_miss & ~I_miss) ? D_data : 16'hxxxx;
 assign mem_write = (data_cache_write & D_miss & ~I_miss);
 

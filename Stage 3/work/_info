@@ -90,7 +90,7 @@ Z8 !s108 1524788283.000000
 R6
 n@a@l@u_16bit
 vBitCell
-Z9 !s110 1524788284
+!s110 1524788284
 !i10b 1
 !s100 >27;IF>XeoJ_T3=SI`9UC0
 Id3`KWF:kYom9LJG43PnZP0
@@ -111,34 +111,34 @@ R8
 R6
 n@bit@cell
 vBlock
-Z10 !s110 1524788288
+Z9 !s110 1524788288
 !i10b 1
 !s100 >=A9@Vi>n<]`WS86Na5dR1
 I4Bb6R`o[a[nac]6cANKH92
 R1
 R2
 R3
-Z11 8I:/GitHub/project_552/Stage 3/DataArray.v
-Z12 FI:/GitHub/project_552/Stage 3/DataArray.v
+Z10 8I:/GitHub/project_552/Stage 3/DataArray.v
+Z11 FI:/GitHub/project_552/Stage 3/DataArray.v
 L0 11
 R4
 r1
 !s85 0
 31
-Z13 !s108 1524788288.000000
-Z14 !s107 I:/GitHub/project_552/Stage 3/DataArray.v|
-Z15 !s90 -reportprogress|300|-work|work|-stats=none|I:/GitHub/project_552/Stage 3/DataArray.v|
+Z12 !s108 1524788288.000000
+Z13 !s107 I:/GitHub/project_552/Stage 3/DataArray.v|
+Z14 !s90 -reportprogress|300|-work|work|-stats=none|I:/GitHub/project_552/Stage 3/DataArray.v|
 !i113 1
 R6
 n@block
 vcache
-R9
+!s110 1524796617
 !i10b 1
-!s100 zm7hnIACAD]gbh@87Be1]1
-IkTMBFDMReZheBHNB3^MWA1
+!s100 ZMMZMTnoYd@Q4d_E:?_E]3
+IGHzc]BeEaPFc>2^BQJ`KH0
 R1
 R2
-w1524777071
+w1524796614
 8I:/GitHub/project_552/Stage 3/cache.v
 FI:/GitHub/project_552/Stage 3/cache.v
 L0 9
@@ -146,19 +146,19 @@ R4
 r1
 !s85 0
 31
-Z16 !s108 1524788284.000000
+!s108 1524796616.000000
 !s107 I:/GitHub/project_552/Stage 3/cache.v|
 !s90 -reportprogress|300|-work|work|-stats=none|I:/GitHub/project_552/Stage 3/cache.v|
 !i113 1
 R6
 vcache_fill_FSM
-Z17 !s110 1524788286
+!s110 1524794606
 !i10b 1
-!s100 eafG8Z@7]TSdofo9n=baA3
-Ina97JIC8QC4aEFcmhP:I93
+!s100 ll;ECSQ93GGZKH:WM;3aX0
+I@:Zz]N?YTmX^RBZSQ:Dei3
 R1
 R2
-w1524787989
+w1524794603
 8I:/GitHub/project_552/Stage 3/cache_fill_FSM.v
 FI:/GitHub/project_552/Stage 3/cache_fill_FSM.v
 L0 1
@@ -166,14 +166,14 @@ R4
 r1
 !s85 0
 31
-R16
+!s108 1524794606.000000
 !s107 I:/GitHub/project_552/Stage 3/cache_fill_FSM.v|
 !s90 -reportprogress|300|-work|work|-stats=none|I:/GitHub/project_552/Stage 3/cache_fill_FSM.v|
 !i113 1
 R6
 ncache_fill_@f@s@m
 vcache_tb
-R17
+!s110 1524788286
 !i10b 1
 !s100 F0ViRg>1U7KMHPO8]c^;V1
 IEGm1FRb@[nCJ>iKn0`=U=2
@@ -193,7 +193,7 @@ r1
 !i113 1
 R6
 vCLA_16bit
-Z18 !s110 1524788287
+Z15 !s110 1524788287
 !i10b 1
 !s100 LmREb3?aKBS0QZz8eUz>h0
 Ik;AinmCgnK`IbLEEl4[^62
@@ -207,14 +207,14 @@ R4
 r1
 !s85 0
 31
-Z19 !s108 1524788287.000000
+Z16 !s108 1524788287.000000
 !s107 I:/GitHub/project_552/Stage 3/CLA_16bit.v|
 !s90 -reportprogress|300|-work|work|-stats=none|I:/GitHub/project_552/Stage 3/CLA_16bit.v|
 !i113 1
 R6
 n@c@l@a_16bit
 vCLA_4bit
-R18
+R15
 !i10b 1
 !s100 5`<XhG7bV>NL5D27XcmHO0
 IDz5@943PLg]Jb=MZXKWnd0
@@ -228,20 +228,20 @@ R4
 r1
 !s85 0
 31
-R19
+R16
 !s107 I:/GitHub/project_552/Stage 3/CLA_4bit.v|
 !s90 -reportprogress|300|-work|work|-stats=none|I:/GitHub/project_552/Stage 3/CLA_4bit.v|
 !i113 1
 R6
 n@c@l@a_4bit
 vcpu
-!s110 1524789784
+!s110 1524794082
 !i10b 1
-!s100 b_kFHX_ogi1lY1`?PRlF73
-IeQi9WZ<gB9gSkBFKAz2;33
+!s100 LdcQ9cl;H8WES;^Ig80nM0
+IHoC;<GDZ[EJ;nXHh6j=1O1
 R1
 R2
-w1524789782
+w1524794047
 8I:/GitHub/project_552/Stage 3/cpu.v
 FI:/GitHub/project_552/Stage 3/cpu.v
 L0 1
@@ -249,13 +249,13 @@ R4
 r1
 !s85 0
 31
-!s108 1524789784.000000
+!s108 1524794082.000000
 !s107 I:/GitHub/project_552/Stage 3/cpu.v|
 !s90 -reportprogress|300|-work|work|-stats=none|I:/GitHub/project_552/Stage 3/cpu.v|
 !i113 1
 R6
 vcpu_ptb
-Z20 !s110 1524788303
+Z17 !s110 1524788303
 !i10b 1
 !s100 7Q6jG@AEb03n`VnkblPDG1
 I[B2;mkDDDmPEhAFDYN?0S1
@@ -269,55 +269,55 @@ R4
 r1
 !s85 0
 31
-Z21 !s108 1524788302.000000
+Z18 !s108 1524788302.000000
 !s107 I:/GitHub/project_552/Stage 3/S18_cpu_testbench_phase3.v|
 !s90 -reportprogress|300|-work|work|-stats=none|I:/GitHub/project_552/Stage 3/S18_cpu_testbench_phase3.v|
 !i113 1
 R6
 vDataArray
-R10
+R9
 !i10b 1
 !s100 N?]IT^VD;Y?biHRif>zHe0
 IfG4Wbda^[?UGKN9Q3M^CQ3
 R1
 R2
 R3
+R10
 R11
-R12
 L0 6
 R4
 r1
 !s85 0
 31
+R12
 R13
 R14
-R15
 !i113 1
 R6
 n@data@array
 vDCell
-R10
+R9
 !i10b 1
 !s100 WkTPVMNC4]E[>Jjfm0[?:0
 IS>BE`?gS:Q<hK7Y83InM:1
 R1
 R2
 R3
+R10
 R11
-R12
-Z22 L0 24
+Z19 L0 24
 R4
 r1
 !s85 0
 31
+R12
 R13
 R14
-R15
 !i113 1
 R6
 n@d@cell
 vdecoder_3_8
-Z23 !s110 1524788289
+Z20 !s110 1524788289
 !i10b 1
 !s100 DB1`In;WAB2>4FVeVON?[3
 I0l2A3i^=PXbB_25a@0KQh3
@@ -331,13 +331,13 @@ R4
 r1
 !s85 0
 31
-R13
+R12
 !s107 I:/GitHub/project_552/Stage 3/decoder_3_8.v|
 !s90 -reportprogress|300|-work|work|-stats=none|I:/GitHub/project_552/Stage 3/decoder_3_8.v|
 !i113 1
 R6
 vdecoder_3_8_tb
-R23
+R20
 !i10b 1
 !s100 SG<cXgMY2B?NUiC;;N6B61
 If3i20=XnbFoV6IHFf?T4R2
@@ -351,13 +351,13 @@ R4
 r1
 !s85 0
 31
-Z24 !s108 1524788289.000000
+Z21 !s108 1524788289.000000
 !s107 I:/GitHub/project_552/Stage 3/decoder_3_8_tb.v|
 !s90 -reportprogress|300|-work|work|-stats=none|I:/GitHub/project_552/Stage 3/decoder_3_8_tb.v|
 !i113 1
 R6
 vDecoder_7_128
-R23
+R20
 !i10b 1
 !s100 1eBbP7k57`Ng==jT=0gZz0
 IBG8hbg=U^>_Mn_>obC@X21
@@ -371,14 +371,14 @@ R4
 r1
 !s85 0
 31
-R24
+R21
 !s107 I:/GitHub/project_552/Stage 3/Decoder_7_128.v|
 !s90 -reportprogress|300|-work|work|-stats=none|I:/GitHub/project_552/Stage 3/Decoder_7_128.v|
 !i113 1
 R6
 n@decoder_7_128
 vdff
-Z25 !s110 1524788290
+Z22 !s110 1524788290
 !i10b 1
 !s100 PV_CoVVQ]?nI;J@mj=Gn=3
 Ib3RLf5>AlADC5H2W3_eoC1
@@ -392,55 +392,55 @@ R4
 r1
 !s85 0
 31
-Z26 !s108 1524788290.000000
+Z23 !s108 1524788290.000000
 !s107 I:/GitHub/project_552/Stage 3/D-Flip-Flop.v|
 !s90 -reportprogress|300|-work|work|-stats=none|I:/GitHub/project_552/Stage 3/D-Flip-Flop.v|
 !i113 1
 R6
 vDWord
-R10
+R9
 !i10b 1
 !s100 CMU0BU[`5ZIMGMl00XYVG3
 IFh=:n9E_0FCiBCmQDC=AF2
 R1
 R2
 R3
+R10
 R11
-R12
 L0 19
 R4
 r1
 !s85 0
 31
+R12
 R13
 R14
-R15
 !i113 1
 R6
 n@d@word
 vEX_MEM_reg
-Z27 !s110 1524788300
+Z24 !s110 1524788300
 !i10b 1
 !s100 =2c1lecIciW?5BE<8<ZQ90
 IFVX5:V=KTh]FELHajz`cI2
 R1
 R2
-Z28 w1524598979
-Z29 8I:/GitHub/project_552/Stage 3/PipelineRegisters.v
-Z30 FI:/GitHub/project_552/Stage 3/PipelineRegisters.v
+Z25 w1524598979
+Z26 8I:/GitHub/project_552/Stage 3/PipelineRegisters.v
+Z27 FI:/GitHub/project_552/Stage 3/PipelineRegisters.v
 L0 93
 R4
 r1
 !s85 0
 31
-Z31 !s108 1524788299.000000
-Z32 !s107 I:/GitHub/project_552/Stage 3/PipelineRegisters.v|
-Z33 !s90 -reportprogress|300|-work|work|-stats=none|I:/GitHub/project_552/Stage 3/PipelineRegisters.v|
+Z28 !s108 1524788299.000000
+Z29 !s107 I:/GitHub/project_552/Stage 3/PipelineRegisters.v|
+Z30 !s90 -reportprogress|300|-work|work|-stats=none|I:/GitHub/project_552/Stage 3/PipelineRegisters.v|
 !i113 1
 R6
 n@e@x_@m@e@m_reg
 vFlag_Reg
-R25
+R22
 !i10b 1
 !s100 jGA4cF@:X1foLj]V9DiM:2
 I1VWhbzbOMoY5>agnPJ4?33
@@ -454,14 +454,14 @@ R4
 r1
 !s85 0
 31
-R26
+R23
 !s107 I:/GitHub/project_552/Stage 3/Flag_Reg.v|
 !s90 -reportprogress|300|-work|work|-stats=none|I:/GitHub/project_552/Stage 3/Flag_Reg.v|
 !i113 1
 R6
 n@flag_@reg
 vforwarding
-Z34 !s110 1524788291
+Z31 !s110 1524788291
 !i10b 1
 !s100 3^P_aX0b:]b;GSd=iU9b12
 I0>MT400k`9GlmLLZJgMGE2
@@ -475,14 +475,14 @@ R4
 r1
 !s85 0
 31
-Z35 !s108 1524788291.000000
+Z32 !s108 1524788291.000000
 !s107 I:/GitHub/project_552/Stage 3/forwarding.v|
 !s90 -reportprogress|300|-work|work|-stats=none|I:/GitHub/project_552/Stage 3/forwarding.v|
 !i113 1
 R6
 vFSM_tb
 DXx6 sv_std 3 std 0 22 WmjPaeP=7F5?QFXzJ>D[Q2
-R34
+R31
 !i10b 1
 !s100 0bB;?m4d>NWdbVMBVRU510
 IbK]6CcIIUXaBWfbY<lzhA1
@@ -498,14 +498,14 @@ R4
 r1
 !s85 0
 31
-R35
+R32
 !s107 I:/GitHub/project_552/Stage 3/FSM_tb.sv|
 !s90 -reportprogress|300|-work|work|-sv|-stats=none|I:/GitHub/project_552/Stage 3/FSM_tb.sv|
 !i113 1
 o-work work -sv
 n@f@s@m_tb
 vfull_adder_1bit
-Z36 !s110 1524788292
+Z33 !s110 1524788292
 !i10b 1
 !s100 P]_5a5>l6lRoz?mh^U0I52
 IQ?imDkGf[Eh8kfe;zAA182
@@ -519,13 +519,13 @@ R4
 r1
 !s85 0
 31
-Z37 !s108 1524788292.000000
+Z34 !s108 1524788292.000000
 !s107 I:/GitHub/project_552/Stage 3/full_adder_1bit.v|
 !s90 -reportprogress|300|-work|work|-stats=none|I:/GitHub/project_552/Stage 3/full_adder_1bit.v|
 !i113 1
 R6
 vhazard_detection_unit
-R36
+R33
 !i10b 1
 !s100 @JFLz:i^6PCZjT>HE`00j2
 IzXi]DF61MkZJUlIOTJme@2
@@ -539,7 +539,7 @@ R4
 r1
 !s85 0
 31
-R37
+R34
 !s107 I:/GitHub/project_552/Stage 3/hazard_detection_unit.v|
 !s90 -reportprogress|300|-work|work|-stats=none|I:/GitHub/project_552/Stage 3/hazard_detection_unit.v|
 !i113 1
@@ -551,7 +551,7 @@ vi_cache
 I90cSOlO4<LEe58_o3Z18_2
 R1
 R2
-Z38 w1524598461
+Z35 w1524598461
 8I:/GitHub/project_552/Stage 3/i_cache.v
 FI:/GitHub/project_552/Stage 3/i_cache.v
 L0 9
@@ -565,13 +565,13 @@ r1
 !i113 1
 R6
 vi_cache_tb
-Z39 !s110 1524788295
+Z36 !s110 1524788295
 !i10b 1
 !s100 hY_XQKYh>7f@6[H1okXd62
 I;Eo0Nlg?kO=Pc<0U1mWAE0
 R1
 R2
-R38
+R35
 8I:/GitHub/project_552/Stage 3/i_cache_tb.v
 FI:/GitHub/project_552/Stage 3/i_cache_tb.v
 L0 1
@@ -579,55 +579,55 @@ R4
 r1
 !s85 0
 31
-Z40 !s108 1524788295.000000
+Z37 !s108 1524788295.000000
 !s107 I:/GitHub/project_552/Stage 3/i_cache_tb.v|
 !s90 -reportprogress|300|-work|work|-stats=none|I:/GitHub/project_552/Stage 3/i_cache_tb.v|
 !i113 1
 R6
 vID_EX_reg
-R27
+R24
 !i10b 1
 !s100 j>^VBI>=O4eEARo:FBU_?3
 IkUX0f2m[F034JM8:^EeTZ2
 R1
 R2
-R28
-R29
-R30
+R25
+R26
+R27
 L0 25
 R4
 r1
 !s85 0
 31
-R31
-R32
-R33
+R28
+R29
+R30
 !i113 1
 R6
 n@i@d_@e@x_reg
 vIF_ID_reg
-R27
+R24
 !i10b 1
 !s100 BnP911NLhMFB4eFATF^je3
 IdjNnEABjRTMK883fYV9jG1
 R1
 R2
-R28
-R29
-R30
+R25
+R26
+R27
 L0 1
 R4
 r1
 !s85 0
 31
-R31
-R32
-R33
+R28
+R29
+R30
 !i113 1
 R6
 n@i@f_@i@d_reg
 vinstruction_control
-R39
+R36
 !i10b 1
 !s100 l>@>lJ3@z[cASBn7liJU81
 IZL99YG3i]K3eTF8`bX3=<1
@@ -641,82 +641,82 @@ R4
 r1
 !s85 0
 31
-R40
+R37
 !s107 I:/GitHub/project_552/Stage 3/instruction_control.v|
 !s90 -reportprogress|300|-work|work|-stats=none|I:/GitHub/project_552/Stage 3/instruction_control.v|
 !i113 1
 R6
 vLShifter
-R20
+R17
 !i10b 1
 !s100 hdE=i@612:@Xd81UXocbZ1
 Ibk[V[gElmMADJ3Z1jcn4]2
 R1
 R2
 R3
-Z41 8I:/GitHub/project_552/Stage 3/Shifter.v
-Z42 FI:/GitHub/project_552/Stage 3/Shifter.v
+Z38 8I:/GitHub/project_552/Stage 3/Shifter.v
+Z39 FI:/GitHub/project_552/Stage 3/Shifter.v
 L0 18
 R4
 r1
 !s85 0
 31
-Z43 !s108 1524788303.000000
-Z44 !s107 I:/GitHub/project_552/Stage 3/Shifter.v|
-Z45 !s90 -reportprogress|300|-work|work|-stats=none|I:/GitHub/project_552/Stage 3/Shifter.v|
+Z40 !s108 1524788303.000000
+Z41 !s107 I:/GitHub/project_552/Stage 3/Shifter.v|
+Z42 !s90 -reportprogress|300|-work|work|-stats=none|I:/GitHub/project_552/Stage 3/Shifter.v|
 !i113 1
 R6
 n@l@shifter
 vMBlock
-Z46 !s110 1524788297
+Z43 !s110 1524788297
 !i10b 1
 !s100 L4iL:[ZBSjOWR]1NQ;04W3
 IXA04JWbbTmfHFDcP:FTIj0
 R1
 R2
 R3
-Z47 8I:/GitHub/project_552/Stage 3/MetaDataArray.v
-Z48 FI:/GitHub/project_552/Stage 3/MetaDataArray.v
+Z44 8I:/GitHub/project_552/Stage 3/MetaDataArray.v
+Z45 FI:/GitHub/project_552/Stage 3/MetaDataArray.v
 L0 10
 R4
 r1
 !s85 0
 31
-Z49 !s108 1524788297.000000
-Z50 !s107 I:/GitHub/project_552/Stage 3/MetaDataArray.v|
-Z51 !s90 -reportprogress|300|-work|work|-stats=none|I:/GitHub/project_552/Stage 3/MetaDataArray.v|
+Z46 !s108 1524788297.000000
+Z47 !s107 I:/GitHub/project_552/Stage 3/MetaDataArray.v|
+Z48 !s90 -reportprogress|300|-work|work|-stats=none|I:/GitHub/project_552/Stage 3/MetaDataArray.v|
 !i113 1
 R6
 n@m@block
 vMCell
-R46
+R43
 !i10b 1
 !s100 nhE=ef3;anUYKjdi>25`f1
 IQFI;9[oYO384M68Ai_JoZ1
 R1
 R2
 R3
-R47
-R48
+R44
+R45
 L0 14
 R4
 r1
 !s85 0
 31
-R49
-R50
-R51
+R46
+R47
+R48
 !i113 1
 R6
 n@m@cell
 vmem_cache_interface
-!s110 1524788981
+!s110 1524793524
 !i10b 1
-!s100 h;n32bXCTbi5MgPklIzWD3
-I8V8Q<lgIaNg__KJ6n28XN1
+!s100 BblOdKEFVNAOgF4i>8fJn0
+IgMzeQ31nA_;37KB`?hY?M1
 R1
 R2
-w1524788976
+w1524793522
 8I:/GitHub/project_552/Stage 3/mem_cache_interface.v
 FI:/GitHub/project_552/Stage 3/mem_cache_interface.v
 L0 1
@@ -724,75 +724,75 @@ R4
 r1
 !s85 0
 31
-!s108 1524788981.000000
+!s108 1524793524.000000
 !s107 I:/GitHub/project_552/Stage 3/mem_cache_interface.v|
 !s90 -reportprogress|300|-work|work|-stats=none|I:/GitHub/project_552/Stage 3/mem_cache_interface.v|
 !i113 1
 R6
 vMEM_WB_reg
-R27
+R24
 !i10b 1
 !s100 K9dKdXXfFnZoH3o]iP9CS3
 I0PE[M2@Ci7Rl5QUm:LnKA3
 R1
 R2
-R28
-R29
-R30
+R25
+R26
+R27
 L0 132
 R4
 r1
 !s85 0
 31
-R31
-R32
-R33
+R28
+R29
+R30
 !i113 1
 R6
 n@m@e@m_@w@b_reg
 vmemory1c
-Z52 !s110 1524788296
+Z49 !s110 1524788296
 !i10b 1
 !s100 3?X`OzTcZQzB4fi`YicjH0
 IO;ikPWNah1ZCVnMP>0ed21
 R1
 R2
 R3
-Z53 8I:/GitHub/project_552/Stage 3/memory.v
-Z54 FI:/GitHub/project_552/Stage 3/memory.v
+Z50 8I:/GitHub/project_552/Stage 3/memory.v
+Z51 FI:/GitHub/project_552/Stage 3/memory.v
 L0 31
 R4
 r1
 !s85 0
 31
-Z55 !s108 1524788296.000000
-Z56 !s107 I:/GitHub/project_552/Stage 3/memory.v|
-Z57 !s90 -reportprogress|300|-work|work|-stats=none|I:/GitHub/project_552/Stage 3/memory.v|
+Z52 !s108 1524788296.000000
+Z53 !s107 I:/GitHub/project_552/Stage 3/memory.v|
+Z54 !s90 -reportprogress|300|-work|work|-stats=none|I:/GitHub/project_552/Stage 3/memory.v|
 !i113 1
 R6
 vmemory1cData
-R52
+R49
 !i10b 1
 !s100 4ZMk:]UXg7RQ]L_=FECo^2
 I0F9D`giD>lEQcjUZLBDOV3
 R1
 R2
 R3
-R53
-R54
+R50
+R51
 L0 70
 R4
 r1
 !s85 0
 31
-R55
-R56
-R57
+R52
+R53
+R54
 !i113 1
 R6
 nmemory1c@data
 vmemory4c
-R46
+R43
 !i10b 1
 !s100 =D_34g1RjNaccXK[ChA2X2
 I0D=M7;6[fkIP63BjnzkG11
@@ -801,39 +801,39 @@ R2
 w1524602777
 8I:/GitHub/project_552/Stage 3/multicycle_memory.v
 FI:/GitHub/project_552/Stage 3/multicycle_memory.v
-R22
+R19
 R4
 r1
 !s85 0
 31
-R49
+R46
 !s107 I:/GitHub/project_552/Stage 3/multicycle_memory.v|
 !s90 -reportprogress|300|-work|work|-stats=none|I:/GitHub/project_552/Stage 3/multicycle_memory.v|
 !i113 1
 R6
 vMetaDataArray
-R46
+R43
 !i10b 1
 !s100 3UQR43kB3ci=79^b4@L4M3
 IOj82cSaHF9aS1C91lQk?X1
 R1
 R2
 R3
-R47
-R48
+R44
+R45
 L0 6
 R4
 r1
 !s85 0
 31
-R49
-R50
-R51
+R46
+R47
+R48
 !i113 1
 R6
 n@meta@data@array
 vmux_3_1
-Z58 !s110 1524788298
+Z55 !s110 1524788298
 !i10b 1
 !s100 LWQO@92Vkm^BVBRX?67fk1
 IYd`N^`bb2JT^iClVNF]eT3
@@ -847,13 +847,13 @@ R4
 r1
 !s85 0
 31
-Z59 !s108 1524788298.000000
+Z56 !s108 1524788298.000000
 !s107 I:/GitHub/project_552/Stage 3/Mux_3_1.v|
 !s90 -reportprogress|300|-work|work|-stats=none|I:/GitHub/project_552/Stage 3/Mux_3_1.v|
 !i113 1
 R6
 vPADDSB_16bit
-R58
+R55
 !i10b 1
 !s100 ;8O6hYL9nOdQ[gLe;9TWN0
 I9=JXo:JzlnKN]7]WDk]HB3
@@ -867,14 +867,14 @@ R4
 r1
 !s85 0
 31
-R59
+R56
 !s107 I:/GitHub/project_552/Stage 3/PADDSB_16bit.v|
 !s90 -reportprogress|300|-work|work|-stats=none|I:/GitHub/project_552/Stage 3/PADDSB_16bit.v|
 !i113 1
 R6
 n@p@a@d@d@s@b_16bit
 vPC_control
-Z60 !s110 1524788299
+Z57 !s110 1524788299
 !i10b 1
 !s100 eA]hS4<a?YfhCHf7c?dbZ1
 I]PfaJDYj12j2KJJ7BR8Bc1
@@ -888,14 +888,14 @@ R4
 r1
 !s85 0
 31
-R31
+R28
 !s107 I:/GitHub/project_552/Stage 3/PC_control.v|
 !s90 -reportprogress|300|-work|work|-stats=none|I:/GitHub/project_552/Stage 3/PC_control.v|
 !i113 1
 R6
 n@p@c_control
 vPC_Reg
-R60
+R57
 !i10b 1
 !s100 GbKm><>LlV>Aa>YNZzVW32
 I;1?I7cgS8zeaAC5R`zj?11
@@ -909,14 +909,14 @@ R4
 r1
 !s85 0
 31
-R31
+R28
 !s107 I:/GitHub/project_552/Stage 3/PC_Reg.v|
 !s90 -reportprogress|300|-work|work|-stats=none|I:/GitHub/project_552/Stage 3/PC_Reg.v|
 !i113 1
 R6
 n@p@c_@reg
 vReadDecoder_4_16
-R27
+R24
 !i10b 1
 !s100 M5W<K3UKKCB=g1j;R>am;3
 IhPVECdh]3]=3<Dmb6`3MZ0
@@ -930,14 +930,14 @@ R4
 r1
 !s85 0
 31
-Z61 !s108 1524788300.000000
+Z58 !s108 1524788300.000000
 !s107 I:/GitHub/project_552/Stage 3/ReadDecoder_4_16.v|
 !s90 -reportprogress|300|-work|work|-stats=none|I:/GitHub/project_552/Stage 3/ReadDecoder_4_16.v|
 !i113 1
 R6
 n@read@decoder_4_16
 vreduction_unit_16bit
-R27
+R24
 !i10b 1
 !s100 5l:n:2>2o[XbCeS7b4MP92
 Ibk0HMBMakP=>bc?^^4PN>3
@@ -951,7 +951,7 @@ R4
 r1
 !s85 0
 31
-R61
+R58
 !s107 I:/GitHub/project_552/Stage 3/reduction_unit_16bit.v|
 !s90 -reportprogress|300|-work|work|-stats=none|I:/GitHub/project_552/Stage 3/reduction_unit_16bit.v|
 !i113 1
@@ -978,107 +978,107 @@ r1
 R6
 n@register
 vregister_16bit
-Z62 !s110 1524788302
+Z59 !s110 1524788302
 !i10b 1
 !s100 kRdojF8XdHOkEn<MUMUiE0
 IfFAH1CB=iZ<mS3kS^miHL1
 R1
 R2
 R3
-Z63 8I:/GitHub/project_552/Stage 3/Register_No_Bitcell.v
-Z64 FI:/GitHub/project_552/Stage 3/Register_No_Bitcell.v
+Z60 8I:/GitHub/project_552/Stage 3/Register_No_Bitcell.v
+Z61 FI:/GitHub/project_552/Stage 3/Register_No_Bitcell.v
 L0 1
 R4
 r1
 !s85 0
 31
-R21
-Z65 !s107 I:/GitHub/project_552/Stage 3/Register_No_Bitcell.v|
-Z66 !s90 -reportprogress|300|-work|work|-stats=none|I:/GitHub/project_552/Stage 3/Register_No_Bitcell.v|
+R18
+Z62 !s107 I:/GitHub/project_552/Stage 3/Register_No_Bitcell.v|
+Z63 !s90 -reportprogress|300|-work|work|-stats=none|I:/GitHub/project_552/Stage 3/Register_No_Bitcell.v|
 !i113 1
 R6
 vregister_1bit
-R62
+R59
 !i10b 1
 !s100 6Y>k@[9DJG1=09;9@?znl0
 I4Xg8NcNX^;jlce2i0jK@Z2
 R1
 R2
 R3
-R63
-R64
+R60
+R61
 L0 86
 R4
 r1
 !s85 0
 31
-R21
-R65
-R66
+R18
+R62
+R63
 !i113 1
 R6
 vregister_4bit
-R62
+R59
 !i10b 1
 !s100 eFlLa6T6[3R`@lXQ:o;[?2
 Iz4Z[L?D6OCWYQ3dCcYNUT0
 R1
 R2
 R3
-R63
-R64
+R60
+R61
 L0 69
 R4
 r1
 !s85 0
 31
-R21
-R65
-R66
+R18
+R62
+R63
 !i113 1
 R6
 vregister_5bit
-R62
+R59
 !i10b 1
 !s100 XYXnX6VbiT70d[D?Z@=4d3
 IWJT2LZXD;2DTUn02he7lI3
 R1
 R2
 R3
-R63
-R64
+R60
+R61
 L0 51
 R4
 r1
 !s85 0
 31
-R21
-R65
-R66
+R18
+R62
+R63
 !i113 1
 R6
 vregister_8bit
-R62
+R59
 !i10b 1
 !s100 FB8n?4f[2MJ109kG??KU^0
 I0YMDbghbkbGFd>a];lUiG2
 R1
 R2
 R3
-R63
-R64
+R60
+R61
 L0 30
 R4
 r1
 !s85 0
 31
-R21
-R65
-R66
+R18
+R62
+R63
 !i113 1
 R6
 vRegisterFile
-R62
+R59
 !i10b 1
 !s100 2Oh7Pm0GP@TKf9dJM8QZk2
 ILN9OnHG;5>09R]?VO_ma@1
@@ -1092,72 +1092,72 @@ R4
 r1
 !s85 0
 31
-R21
+R18
 !s107 I:/GitHub/project_552/Stage 3/RegisterFile.v|
 !s90 -reportprogress|300|-work|work|-stats=none|I:/GitHub/project_552/Stage 3/RegisterFile.v|
 !i113 1
 R6
 n@register@file
 vRRotator
-R20
+R17
 !i10b 1
 !s100 ?U>If]_X>59=PQ2SWNkiN0
 IZC0AFDi`jOaoCDZXUhTB^3
 R1
 R2
 R3
-R41
-R42
+R38
+R39
 L0 64
 R4
 r1
 !s85 0
 31
-R43
-R44
-R45
+R40
+R41
+R42
 !i113 1
 R6
 n@r@rotator
 vRShifter
-R20
+R17
 !i10b 1
 !s100 EhANbbP>P1e3^]aVYUP0k0
 IN5G0RMPY_3e3>DMahe^hW2
 R1
 R2
 R3
-R41
-R42
+R38
+R39
 L0 41
 R4
 r1
 !s85 0
 31
-R43
-R44
-R45
+R40
+R41
+R42
 !i113 1
 R6
 n@r@shifter
 vShifter
-R20
+R17
 !i10b 1
 !s100 QQ[9NPAMEE@WVPb>i8h^T3
 I_lf[JmSlc8dBTNj4ao5A:3
 R1
 R2
 R3
-R41
-R42
+R38
+R39
 L0 1
 R4
 r1
 !s85 0
 31
-R43
-R44
-R45
+R40
+R41
+R42
 !i113 1
 R6
 n@shifter

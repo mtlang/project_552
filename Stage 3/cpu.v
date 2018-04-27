@@ -227,18 +227,18 @@ mem_cache_interface cache_interface(.fsm_busy(fsm_busy), .write_data_array(fsm_w
 					.miss_address(miss_address), .mem_data_in(mem_data_in), .D_new_block(D_new_block),
 					.I_new_block(I_new_block), .clk(clk), .rst(rst), .D_write_data(D_write_data),
 					.I_write_data(I_write_data), .I_stall(I_stall), .D_stall(D_stall), 
-					.I_write_tag(I_write_tag));
+					.I_write_tag(I_write_tag), .Word_Num(word_num));
 
 memory4c main_memory(.data_out(memory_data), .data_in(mem_data_in), .addr(mem_addr), .enable(mem_en), 
 					.wr(mem_write), .clk(clk), .rst(rst), .data_valid(memory_data_valid));
 					
 cache D_Cache(.clk(clk), .rst(rst), .Address(MEM_ALU_result), .Data_In(D_new_block), 
 				.Data_Out(data_out), .Write_Data_Array(D_write_data), .Write_Tag_Array(D_write_tag),
-				.Miss(D_miss), .Read_Enable(MEM_MemRead), .Word_Num(word_num));
+				.Miss(D_miss), .Read_Enable(MEM_MemRead), .Word_Num(word_num[2:0]));
 
 cache I_Cache(.clk(clk), .rst(rst), .Address(PC_in), .Data_In(I_new_block), 
 				.Data_Out(instruction), .Write_Data_Array(I_write_data), .Write_Tag_Array(I_write_tag), 
-				.Miss(I_miss), .Read_Enable(1'b1), .Word_Num(word_num));
+				.Miss(I_miss), .Read_Enable(1'b1), .Word_Num(word_num[2:0]));
 
 ////////////////
 // PC Control //
