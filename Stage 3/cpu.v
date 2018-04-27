@@ -234,7 +234,7 @@ memory4c main_memory(.data_out(memory_data), .data_in(mem_data_in), .addr(mem_ad
 					
 cache D_Cache(.clk(clk), .rst(rst), .Address(MEM_ALU_result), .Data_In(D_new_block), 
 				.Data_Out(data_out), .Write_Data_Array(D_write_data), .Write_Tag_Array(D_write_tag),
-				.Miss(D_miss), .Read_Enable(MEM_MemRead), .Word_Num(word_num[2:0]));
+				.Miss(D_miss), .Read_Enable(MEM_MemRead | MEM_MemWrite), .Word_Num(word_num[2:0]));
 
 cache I_Cache(.clk(clk), .rst(rst), .Address(PC_in), .Data_In(I_new_block), 
 				.Data_Out(instruction), .Write_Data_Array(I_write_data), .Write_Tag_Array(I_write_tag), 

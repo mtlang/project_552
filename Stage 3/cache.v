@@ -44,8 +44,8 @@ DataArray DA (.clk(clk), .rst(rst), .DataIn(Data_In), .Write(Write_Data_Array), 
 //first bit is valid bit in tag
 assign tag = {1'b1,Address[14:8]};
 //assign blk_index = Address[6:0];
-assign blk_index = {Address[7:3],1'b0};
-assign word = Address[2:0];
+assign blk_index = {Address[8:4],1'b0};
+assign word = Address[3:1];
 
 //word enable assigned the specific word if a read
 //on writes word enable is assigned the one-hot shifted word
