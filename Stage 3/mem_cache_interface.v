@@ -42,8 +42,8 @@ assign mem_data_in = (data_cache_write & D_miss) ? D_data : 16'hxxxx;
 assign mem_write = (data_cache_write & ~D_miss & ~I_miss);
 
 assign D_write_tag =  D_miss & write_tag_array & data_cache_write & ~I_miss; //(D_miss & ~I_miss  & write_tag_array) | 
-assign D_write_data = (data_cache_write) ? 1'b1 : D_miss & write_data_array & ~I_miss; //(D_miss & ~I_miss & write_data_array) | data_cache_write;
-assign D_new_block = (write_data_array) ? memory_data : (data_cache_write) ? D_data : 16'hxxxx;
+assign D_write_data = (data_cache_write & ~I_miss) ? 1'b1 : D_miss & write_data_array & ~I_miss; //(D_miss & ~I_miss & write_data_array) | data_cache_write;
+assign D_new_block = (write_data_array) ? D_data : (data_cache_write) ? memory_data : D_data;
 
 assign I_write_tag = (I_miss & write_tag_array);
 assign I_write_data = (I_miss & write_data_array);
