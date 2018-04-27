@@ -44,7 +44,6 @@ wire [15:0] src_data2;			// Data from reg2
 
 // Data Memory Signals
 wire [15:0] data_write;			// Result of data to be written to Data Memory
-wire [15:0] data_write_address; // Address for data to be written to in Data Memory
 wire [15:0] data_out;			// Data out from Data Memory
 wire [15:0] data_out_final;		// Final output data (ALU result or Data Mem data)
 
@@ -152,16 +151,6 @@ wire [15:0] mem_data_in;		// Data to write to main memory
 // Instantiate required modules //
 //////////////////////////////////
 
-// Writes to Data Memory
-// TODO Remove this
-//memory1cData DataMem(.data_out(data_out), .data_in(MEM_data_write), .addr(MEM_ALU_result), 
-//			.enable(MEM_MemWrite | MEM_MemRead), .wr(MEM_MemWrite), .clk(clk), .rst(rst));
-
-// Reads from Instruction Memory
-// TODO Remove this
-//memory1c InstMem(.data_out(instruction), .data_in(16'hxxxx), .addr(PC_in), .enable(rst_n), 
-//			.wr(1'b0), .clk(clk), .rst(rst));
-
 // Register File
 RegisterFile Regs(.clk(clk), .rst(rst), .SrcReg1(srcReg1), .SrcReg2(srcReg2), .DstReg(dstReg), 
 			.WriteReg(WB_RegWrite), .DstData(data_write_reg), .SrcData1(src_data1), .SrcData2(src_data2));
@@ -249,7 +238,7 @@ cache D_Cache(.clk(clk), .rst(rst), .Address(MEM_ALU_result), .Data_In(D_new_blo
 
 cache I_Cache(.clk(clk), .rst(rst), .Address(PC_in), .Data_In(I_new_block), 
 				.Data_Out(instruction), .Write_Data_Array(I_write_data), .Write_Tag_Array(I_write_tag), 
-				.Miss(I_miss), .Read_Enable(~I_write_data), .Word_Num(word_num));
+				.Miss(I_miss), .Read_Enable(1'b1), .Word_Num(word_num));
 
 ////////////////
 // PC Control //

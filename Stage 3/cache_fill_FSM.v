@@ -28,10 +28,6 @@ dff addr[15:0](.clk(clk), .rst(rst), .d(nxt_final[15:0]), .q(current_addr[15:0])
 
 // FF for state
 dff STATE[3:0](.clk(clk), .rst(rst), .d(nxt_state[3:0]), .q(state[3:0]), .wen(1'b1));
-//dff STATE0(.clk(clk), .rst(rst), .d(nxt_state[0]), .q(state[0]), .wen(1'b1));
-//dff STATE1(.clk(clk), .rst(rst), .d(nxt_state[1]), .q(state[1]), .wen(1'b1));
-//dff STATE2(.clk(clk), .rst(rst), .d(nxt_state[2]), .q(state[2]), .wen(1'b1));
-//dff STATE3(.clk(clk), .rst(rst), .d(nxt_state[3]), .q(state[3]), .wen(1'b1));
 
 always @* begin
 // Default signals
