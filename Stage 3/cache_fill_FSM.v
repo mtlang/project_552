@@ -91,7 +91,6 @@ case (state)
 		write_sec = 1;
 		addr_ff_en = (memory_data_valid) ? 1 : 0;
 		add_value = 16'h0002;
-		//
 		word_num = 3'h3;
 		nxt_state = (memory_data_valid) ? 4'h5 : 4'h4;
 	end
@@ -110,7 +109,6 @@ case (state)
 		write_data_array = (memory_data_valid) ? 1 : 0;
 		nxt_final = nxt_addr;
 		memory_address = current_addr;
-		//add_value = 16'h0002;
 		addr_ff_en = (memory_data_valid) ? 1 : 0;
 		word_num = 3'h5;
 		nxt_state = (memory_data_valid) ? 4'h7 : 4'h6;
@@ -121,7 +119,6 @@ case (state)
 		nxt_final = nxt_addr;
 		memory_address = current_addr;
 		addr_ff_en = (memory_data_valid) ? 1 : 0;
-		//add_value = 16'h0002;
 		word_num = 3'h6;
 		nxt_state = (memory_data_valid) ? 4'h8 : 4'h7;
 	end

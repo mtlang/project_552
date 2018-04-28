@@ -20,7 +20,7 @@ output [15:0] Data_Out;
 wire [2:0] word;
 wire [7:0] tag_mda, tag; 
 wire [7:0] word_line_rd, word_line_wrt, word_en;
-wire [7:0] junk, junk2;
+wire [7:0] junk;
 wire [6:0] blk_index;
 wire [15:0] cache_data;
 wire [127:0] block_en;
@@ -38,8 +38,6 @@ MetaDataArray MDA (.clk(clk), .rst(rst), .DataIn(tag), .Write(Write_Tag_Array), 
 
 //Data array (cache lines)
 DataArray DA (.clk(clk), .rst(rst), .DataIn(Data_In), .Write(Write_Data_Array), .BlockEnable(block_en), .WordEnable(word_en), .DataOut(cache_data));	
-
-// TODO Figure out math for decoding stuff
 
 //first bit is valid bit in tag
 assign tag = {1'b1,Address[14:8]};

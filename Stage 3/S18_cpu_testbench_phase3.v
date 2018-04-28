@@ -184,10 +184,10 @@ module cpu_ptb();
    assign WriteData = DUT.data_write_reg;
    // If above is true, this should hold the Data being written to the register. (16 bits)
    
-   assign MemRead =  (DUT.mem_en /*& ~DUT.p0.notdonem*/);	// MEM_MemRead		??
+   assign MemRead =  (DUT.mem_en);
    // Is memory being read from, in this cycle. one bit signal (1 means yes, 0 means no)
    
-   assign MemWrite = (DUT.mem_write & DUT.mem_en /*& ~DUT.p0.notdonem*/);	///???
+   assign MemWrite = (DUT.mem_write & DUT.mem_en);
    // Is memory being written to, in this cycle (1 bit signal)
    
    assign MemAddress = DUT.MEM_ALU_result;
@@ -208,7 +208,7 @@ module cpu_ptb();
    assign DCacheReq = DUT.MEM_MemRead | DUT.MEM_MemWrite;
    // Signal indicating a valid instruction data read or write request to cache
    
-   assign DCacheHit = ~DUT.D_miss;	// TODO
+   assign DCacheHit = ~DUT.D_miss;
    // Signal indicating a valid data cache hit
 
    /* Add anything else you want here */
