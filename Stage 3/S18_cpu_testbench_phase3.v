@@ -19,6 +19,7 @@ module cpu_ptb();
    wire        ICacheReq;
 
    wire        Halt;         /* Halt executed and in Memory or writeback stage */
+   wire		   some_stall; 	// ~DUT.Stall & ~DUT.I_stall & ~DUT.D_stall
         
    integer     inst_count;
    integer     cycle_count;
@@ -175,7 +176,7 @@ module cpu_ptb();
    assign Inst = DUT.instruction;
    //Instruction fetched in the current cycle
    
-   assign RegWrite = DUT.WB_RegWrite;
+   assign RegWrite = DUT.WB_RegWrite & some_stall;
    // Is register file being written to in this cycle, one bit signal (1 means yes, 0 means no)
   
    assign WriteRegister = DUT.WB_Rd;
@@ -187,7 +188,7 @@ module cpu_ptb();
    assign MemRead =  (DUT.mem_en);
    // Is memory being read from, in this cycle. one bit signal (1 means yes, 0 means no)
    
-   assign MemWrite = (DUT.mem_write & DUT.mem_en);
+   assign MemWrite = (DUT.mem_write & DUT.mem_en & some_stall);
    // Is memory being written to, in this cycle (1 bit signal)
    
    assign MemAddress = DUT.MEM_ALU_result;
@@ -196,22 +197,27 @@ module cpu_ptb();
    assign MemDataIn = DUT.D_new_block;
    // If there's a memory write in this cycle, this is the Data being written to memory (16 bits)
    
-   assign MemDataOut = DUT.data_out;
+   assign MemDataOut = DUT.memory_data;
    // If there's a memory read in this cycle, this is the data being read out of memory (16 bits)
 
-   assign ICacheReq = DUT.I_miss;
-   // Signal indicating a valid instruction read request to cache
+   assign ICacheReq = (Halt || ~DUT.I_miss) | (DUT.I_miss & DUT.MemRead);// & some_stall;
+   // Signal indicating a valid instruction read request to cache	
+   // TODO
    
-   assign ICacheHit = ~DUT.I_miss;
+   assign ICacheHit = some_stall | Halt; // plus one due to our signals blocking the assertion
    // Signal indicating a valid instruction cache hit
+   // TODO
 
-   assign DCacheReq = DUT.MEM_MemRead | DUT.MEM_MemWrite;
+   assign DCacheReq = (DUT.MEM_MemRead | DUT.MEM_MemWrite) & some_stall;
    // Signal indicating a valid instruction data read or write request to cache
+   // TODO
    
-   assign DCacheHit = ~DUT.D_miss;
+   assign DCacheHit = some_stall & (DUT.MEM_MemRead | DUT.MEM_MemWrite);
    // Signal indicating a valid data cache hit
+   // TODO
 
    /* Add anything else you want here */
+   assign some_stall = ~DUT.Stall & ~DUT.I_stall & ~DUT.D_stall;
 
    
 endmodule

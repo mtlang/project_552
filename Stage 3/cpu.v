@@ -65,12 +65,11 @@ wire [15:0] ALU_in1;			// First input to ALU
 wire [15:0] ALU_in2;			// Second input to ALU
 wire [15:0] ALU_result;			// Result of ALU operation
 wire [15:0] ALU_in1_int;		// Intermediate result for ALU in1
+wire [15:0] alu_int_temp;
 
 ////////////////////
 // Pipeline Signals
 // ID
-wire ID_BR;
-wire [3:0] ID_ALU_OP;
 wire [15:0] ID_PC_plus_two;
 wire [15:0] ID_instruction;
 
@@ -217,7 +216,7 @@ MEM_WB_reg memwb(.clk(clk), .rst(rst), .write(~D_stall), .MEM_ALU_result(MEM_ALU
 cache_fill_FSM cache_fsm(.clk(clk), .rst(rst), .miss_detected(miss_detected), 
 					.miss_address(miss_address), .fsm_busy(fsm_busy), .write_data_array(fsm_write_data), 
 					.write_tag_array(fsm_write_tag), .memory_address(mem_addr),
-					.memory_data(memory_data), .memory_data_valid(memory_data_valid), .word_num(word_num));
+					.memory_data_valid(memory_data_valid), .word_num(word_num));
 
 mem_cache_interface cache_interface(.fsm_busy(fsm_busy), .write_data_array(fsm_write_data), 
 					.write_tag_array(fsm_write_tag), .data_cache_write(MEM_MemWrite), .D_miss(D_miss), 
@@ -227,7 +226,7 @@ mem_cache_interface cache_interface(.fsm_busy(fsm_busy), .write_data_array(fsm_w
 					.miss_address(miss_address), .mem_data_in(mem_data_in), .D_new_block(D_new_block),
 					.I_new_block(I_new_block), .clk(clk), .rst(rst), .D_write_data(D_write_data),
 					.I_write_data(I_write_data), .I_stall(I_stall), .D_stall(D_stall), 
-					.I_write_tag(I_write_tag), .Word_Num(word_num));
+					.I_write_tag(I_write_tag));
 
 memory4c main_memory(.data_out(memory_data), .data_in(mem_data_in), .addr(mem_addr), .enable(mem_en), 
 					.wr(mem_write), .clk(clk), .rst(rst), .data_valid(memory_data_valid));
@@ -276,8 +275,6 @@ assign data_write_reg = (WB_PCS) ? WB_PC_plus_two : data_out_final;	// Mux for w
 
 // Inputs to Data Memory
 assign data_write = (EX_MemWrite) ? EX_src_data1 : EX_src_data2;
-
-wire [15:0] alu_int_temp;
 
 // Inputs to ALU
 assign ALU_in1 = (EX_IMM) ? EX_extended_immediate : alu_int_temp;	// Mux for non-forwarded alu in1

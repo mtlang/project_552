@@ -1,11 +1,10 @@
 module cache_fill_FSM(clk, rst, miss_detected, miss_address, fsm_busy, write_data_array, 
-						write_tag_array, memory_address, memory_data, memory_data_valid, word_num);
+						write_tag_array, memory_address, memory_data_valid, word_num);
 
 input clk, rst;
 input miss_detected;				// high when tag match logic detecs a miss
 input memory_data_valid;			// high when valid data on memory_data line
 input [15:0] miss_address;			// address that missed in cache
-input [15:0] memory_data;			// data returned by memory
 
 output reg fsm_busy;				// high when FSM handling a miss
 output reg write_data_array;		// enable for writing from memory data to cache data array
@@ -100,7 +99,6 @@ case (state)
 		nxt_final = nxt_addr;
 		memory_address = current_addr;
 		addr_ff_en = (memory_data_valid) ? 1 : 0;
-		//add_value = 16'h0002;
 		word_num = 3'h4;
 		nxt_state = (memory_data_valid) ? 4'h6 : 4'h5;
 	end
